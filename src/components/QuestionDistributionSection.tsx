@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import { useJsonContent } from "../hooks/useJsonContent";
+import { resolvePublicUrl } from "../utils/url";
 
 interface ChartBar {
   subtypeId: string;
@@ -224,7 +225,7 @@ export function QuestionDistributionSection() {
 
     async function loadCases() {
       try {
-        const response = await fetch(activeSource.caseFile, { cache: "force-cache" });
+        const response = await fetch(resolvePublicUrl(activeSource.caseFile), { cache: "force-cache" });
         if (!response.ok) {
           return;
         }

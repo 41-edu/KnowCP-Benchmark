@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { siteMeta } from "../data/siteContent";
 import { useJsonContent } from "../hooks/useJsonContent";
+import { resolvePublicUrl } from "../utils/url";
 
 interface HeroLinkItem {
   label: string;
@@ -31,7 +32,7 @@ export function HeroSection() {
   const content = useJsonContent<HeroConfig>("/content/site-meta.json", siteMeta as HeroConfig);
 
   const heroStyle = {
-    ["--hero-bg-image" as string]: `url(${content.coverImage})`,
+    ["--hero-bg-image" as string]: `url(${resolvePublicUrl(content.coverImage)})`,
     ["--hero-height" as string]: content.heroHeight ?? "78vh",
     ["--hero-bg-pos-x" as string]: content.heroBgPosX ?? "50%",
     ["--hero-bg-pos-y" as string]: content.heroBgPosY ?? "42%",
@@ -77,11 +78,19 @@ export function HeroSection() {
         <div className="hero-links">
           <a href={content.githubUrl} target="_blank" rel="noreferrer" className="github-secondary">
             <span>Project</span>
-            <img src="/content/GitHub_Invertocat_Black.svg" alt="GitHub" className="hero-link-github-icon" />
+            <img
+              src={resolvePublicUrl("/content/GitHub_Invertocat_Black.svg")}
+              alt="GitHub"
+              className="hero-link-github-icon"
+            />
           </a>
           <a href={content.huggingFaceUrl} target="_blank" rel="noreferrer" className="hf-primary">
             <span>Dataset</span>
-            <img src="/content/hf-logo.svg" alt="Hugging Face" className="hero-link-hf-icon" />
+            <img
+              src={resolvePublicUrl("/content/hf-logo.svg")}
+              alt="Hugging Face"
+              className="hero-link-hf-icon"
+            />
           </a>
         </div>
       </div>

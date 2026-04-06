@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import { useJsonContent } from "../hooks/useJsonContent";
+import { resolvePublicUrl } from "../utils/url";
 
 type ExplorerMode = "elements" | "techniques" | "seals" | "inscriptions";
 
@@ -379,7 +380,9 @@ export function DataDistributionSection() {
     async function loadModeData() {
       try {
         if (mode === "elements" && !loadedSources.elements) {
-          const response = await fetch(summary.annotationSources.elements, { cache: "force-cache" });
+          const response = await fetch(resolvePublicUrl(summary.annotationSources.elements), {
+            cache: "force-cache",
+          });
           if (!response.ok) {
             return;
           }
@@ -391,7 +394,9 @@ export function DataDistributionSection() {
         }
 
         if (mode === "techniques" && !loadedSources.techniques) {
-          const response = await fetch(summary.annotationSources.techniques, { cache: "force-cache" });
+          const response = await fetch(resolvePublicUrl(summary.annotationSources.techniques), {
+            cache: "force-cache",
+          });
           if (!response.ok) {
             return;
           }
@@ -403,7 +408,9 @@ export function DataDistributionSection() {
         }
 
         if (mode === "seals" && !loadedSources.seals) {
-          const response = await fetch(summary.annotationSources.seals, { cache: "force-cache" });
+          const response = await fetch(resolvePublicUrl(summary.annotationSources.seals), {
+            cache: "force-cache",
+          });
           if (!response.ok) {
             return;
           }
@@ -415,7 +422,9 @@ export function DataDistributionSection() {
         }
 
         if (mode === "inscriptions" && !loadedSources.inscriptions) {
-          const response = await fetch(summary.annotationSources.inscriptions, { cache: "force-cache" });
+          const response = await fetch(resolvePublicUrl(summary.annotationSources.inscriptions), {
+            cache: "force-cache",
+          });
           if (!response.ok) {
             return;
           }

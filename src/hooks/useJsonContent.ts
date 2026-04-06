@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { resolvePublicUrl } from "../utils/url";
 
 export function useJsonContent<T>(path: string, fallback: T): T {
   const [data, setData] = useState<T>(fallback);
@@ -8,9 +9,12 @@ export function useJsonContent<T>(path: string, fallback: T): T {
 
     async function load() {
       try {
+        const resolvedPath = resolvePublicUrl(path);
         const version = (window as Window & { __KNOWCP_CONTENT_VERSION__?: string })
           .__KNOWCP_CONTENT_VERSION__;
-        const url = version ? `${path}${path.includes("?") ? "&" : "?"}v=${version}` : path;
+        const url = version
+          ? `${resolvedPath}${resolvedPath.includes("?") ? "&" : "?"}v=${version}`
+          : resolvedPath;
 
         const response = await fetch(url, { cache: "force-cache" });
         if (!response.ok) {
