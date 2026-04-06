@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "build:content": "node ./tools/build_content.mjs",
+    "build:all": "npm run build:content && npm run build",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",

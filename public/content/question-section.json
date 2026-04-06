@@ -1,0 +1,314 @@
+{
+  "chart": [
+    {
+      "categoryId": "foundational-knowledge",
+      "categoryLabel": "foundational knowledge",
+      "total": 12100,
+      "bars": [
+        {
+          "subtypeId": "image-to-title",
+          "subtypeLabel": "Image-to-Title",
+          "shortName": "ITT",
+          "count": 1058
+        },
+        {
+          "subtypeId": "multi-image-to-title",
+          "subtypeLabel": "Multi-Image-to-Title",
+          "shortName": "MITT",
+          "count": 152
+        },
+        {
+          "subtypeId": "title-to-image",
+          "subtypeLabel": "Title-to-Image",
+          "shortName": "TTI",
+          "count": 1210
+        },
+        {
+          "subtypeId": "multi-hop-qa",
+          "subtypeLabel": "Multi-hop-QA",
+          "shortName": "MHQA",
+          "count": 9680
+        }
+      ]
+    },
+    {
+      "categoryId": "visual-content",
+      "categoryLabel": "visual content",
+      "total": 10921,
+      "bars": [
+        {
+          "subtypeId": "seal-recognition",
+          "subtypeLabel": "Seal-Recognition",
+          "shortName": "SR",
+          "count": 1792
+        },
+        {
+          "subtypeId": "inscription-recognition",
+          "subtypeLabel": "Inscription-Recognition",
+          "shortName": "IR",
+          "count": 2351
+        },
+        {
+          "subtypeId": "element-recognition",
+          "subtypeLabel": "Element-Recognition",
+          "shortName": "ER",
+          "count": 4154
+        },
+        {
+          "subtypeId": "technique-recognition",
+          "subtypeLabel": "Technique-Recognition",
+          "shortName": "TR",
+          "count": 2624
+        }
+      ]
+    },
+    {
+      "categoryId": "deep-reasoning",
+      "categoryLabel": "deep reasoning",
+      "total": 2766,
+      "bars": [
+        {
+          "subtypeId": "visual-analysis",
+          "subtypeLabel": "Visual-Analysis",
+          "shortName": "VA",
+          "count": 922
+        },
+        {
+          "subtypeId": "cultural-context",
+          "subtypeLabel": "Cultural-Context",
+          "shortName": "CC",
+          "count": 922
+        },
+        {
+          "subtypeId": "provenance-research",
+          "subtypeLabel": "Provenance-Research",
+          "shortName": "PR",
+          "count": 922
+        }
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "id": "foundational-knowledge",
+      "label": "foundational knowledge",
+      "count": 12100,
+      "subtypes": [
+        {
+          "id": "image-to-title",
+          "label": "Image-to-Title",
+          "shortName": "ITT",
+          "count": 1058,
+          "sources": [
+            {
+              "id": "ITT",
+              "label": "ITT",
+              "count": 1058,
+              "caseFile": "/content/question-cases/ITT.json",
+              "groupCount": 1058
+            }
+          ]
+        },
+        {
+          "id": "multi-image-to-title",
+          "label": "Multi-Image-to-Title",
+          "shortName": "MITT",
+          "count": 152,
+          "sources": [
+            {
+              "id": "MITT",
+              "label": "MITT",
+              "count": 152,
+              "caseFile": "/content/question-cases/MITT.json",
+              "groupCount": 152
+            }
+          ]
+        },
+        {
+          "id": "title-to-image",
+          "label": "Title-to-Image",
+          "shortName": "TTI",
+          "count": 1210,
+          "sources": [
+            {
+              "id": "TTI",
+              "label": "TTI",
+              "count": 1210,
+              "caseFile": "/content/question-cases/TTI.json",
+              "groupCount": 1210
+            }
+          ]
+        },
+        {
+          "id": "multi-hop-qa",
+          "label": "Multi-hop-QA",
+          "shortName": "MHQA",
+          "count": 9680,
+          "sources": [
+            {
+              "id": "ITT_MHQA_choice",
+              "label": "ITT_MHQA_choice",
+              "count": 4232,
+              "caseFile": "/content/question-cases/ITT_MHQA_choice.json",
+              "groupCount": 1058
+            },
+            {
+              "id": "ITT_MHQA_fillin",
+              "label": "ITT_MHQA_fillin",
+              "count": 4232,
+              "caseFile": "/content/question-cases/ITT_MHQA_fillin.json",
+              "groupCount": 1058
+            },
+            {
+              "id": "MITT_MHQA_choice",
+              "label": "MITT_MHQA_choice",
+              "count": 608,
+              "caseFile": "/content/question-cases/MITT_MHQA_choice.json",
+              "groupCount": 152
+            },
+            {
+              "id": "MITT_MHQA_fillin",
+              "label": "MITT_MHQA_fillin",
+              "count": 608,
+              "caseFile": "/content/question-cases/MITT_MHQA_fillin.json",
+              "groupCount": 152
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "visual-content",
+      "label": "visual content",
+      "count": 10921,
+      "subtypes": [
+        {
+          "id": "seal-recognition",
+          "label": "Seal-Recognition",
+          "shortName": "SR",
+          "count": 1792,
+          "sources": [
+            {
+              "id": "SR",
+              "label": "SR",
+              "count": 1792,
+              "caseFile": "/content/question-cases/SR.json",
+              "groupCount": 1792
+            }
+          ]
+        },
+        {
+          "id": "inscription-recognition",
+          "label": "Inscription-Recognition",
+          "shortName": "IR",
+          "count": 2351,
+          "sources": [
+            {
+              "id": "IR",
+              "label": "IR",
+              "count": 2351,
+              "caseFile": "/content/question-cases/IR.json",
+              "groupCount": 2351
+            }
+          ]
+        },
+        {
+          "id": "element-recognition",
+          "label": "Element-Recognition",
+          "shortName": "ER",
+          "count": 4154,
+          "sources": [
+            {
+              "id": "ER_choice",
+              "label": "ER_choice",
+              "count": 2875,
+              "caseFile": "/content/question-cases/ER_choice.json",
+              "groupCount": 1279
+            },
+            {
+              "id": "ER_fillin",
+              "label": "ER_fillin",
+              "count": 1279,
+              "caseFile": "/content/question-cases/ER_fillin.json",
+              "groupCount": 1279
+            }
+          ]
+        },
+        {
+          "id": "technique-recognition",
+          "label": "Technique-Recognition",
+          "shortName": "TR",
+          "count": 2624,
+          "sources": [
+            {
+              "id": "TR_choice",
+              "label": "TR_choice",
+              "count": 1312,
+              "caseFile": "/content/question-cases/TR_choice.json",
+              "groupCount": 1312
+            },
+            {
+              "id": "TR_fillin",
+              "label": "TR_fillin",
+              "count": 1312,
+              "caseFile": "/content/question-cases/TR_fillin.json",
+              "groupCount": 1312
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "deep-reasoning",
+      "label": "deep reasoning",
+      "count": 2766,
+      "subtypes": [
+        {
+          "id": "visual-analysis",
+          "label": "Visual-Analysis",
+          "shortName": "VA",
+          "count": 922,
+          "sources": [
+            {
+              "id": "VA",
+              "label": "VA",
+              "count": 922,
+              "caseFile": "/content/question-cases/VA.json",
+              "groupCount": 922
+            }
+          ]
+        },
+        {
+          "id": "cultural-context",
+          "label": "Cultural-Context",
+          "shortName": "CC",
+          "count": 922,
+          "sources": [
+            {
+              "id": "CC",
+              "label": "CC",
+              "count": 922,
+              "caseFile": "/content/question-cases/CC.json",
+              "groupCount": 922
+            }
+          ]
+        },
+        {
+          "id": "provenance-research",
+          "label": "Provenance-Research",
+          "shortName": "PR",
+          "count": 922,
+          "sources": [
+            {
+              "id": "PR",
+              "label": "PR",
+              "count": 922,
+              "caseFile": "/content/question-cases/PR.json",
+              "groupCount": 922
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

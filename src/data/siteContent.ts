@@ -1,10 +1,26 @@
 export const siteMeta = {
-  title:
-    "KnowCP: A Comprehensive Benchmark from Foundational Knowledge to Deep Understanding for Chinese Painting",
+  title: "KnowCP: A Comprehensive Benchmark for Chinese Painting",
   subtitle:
-    "A placeholder-first website template for dataset release, exploration, and benchmark reporting.",
-  githubUrl: "https://github.com/your-org/your-knowcp-repo",
-  huggingFaceUrl: "https://huggingface.co/datasets/your-org/knowcp",
-  coverImage:
-    "https://images.unsplash.com/photo-1594736797933-d0f4ce8b1f0a?auto=format&fit=crop&w=1800&q=80",
+    "Official benchmark website for dataset access, structured evaluation, and model comparison.",
+  githubUrl: "https://github.com/41-edu/KnowCP",
+  huggingFaceUrl: "https://huggingface.co/datasets/g41/KnowCP",
+  coverImage: "/content/cover.jpg",
+  heroHeight: "45vh",
+  heroBgPosX: "50%",
+  heroBgPosY: "42%",
+  heroBgWidth: "112%",
+  heroBgHeight: "auto",
+  heroImageOpacity: 0.86,
+  heroContentInsetLeft: "clamp(20px, 4vw, 72px)",
+  heroOverlayOpacity: 0,
+  heroImageWashOpacity: 0.3,
+  hfButtonColor: "#ff8a00",
+  navStyle: "glass",
+  navItems: [
+    { label: "Top", target: "#top" },
+    { label: "Introduction", target: "#intro" },
+    { label: "Data Distribution", target: "#distribution" },
+    { label: "Question Distribution", target: "#question-distribution" },
+    { label: "Benchmark", target: "#benchmark-performance" },
+  ],
 };

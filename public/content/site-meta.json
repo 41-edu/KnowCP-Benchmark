@@ -1,0 +1,24 @@
+{
+  "title": "KnowCP: A Comprehensive Benchmark for Chinese Painting",
+  "subtitle": "Official benchmark website for dataset access, structured evaluation, and model comparison.",
+  "githubUrl": "https://github.com/41-edu/KnowCP",
+  "huggingFaceUrl": "https://huggingface.co/datasets/g41/KnowCP",
+  "coverImage": "/content/cover.jpg",
+  "heroHeight": "45vh",
+  "heroBgPosX": "0%",
+  "heroBgPosY": "0%",
+  "heroBgWidth": "210%",
+  "heroBgHeight": "auto",
+  "heroImageOpacity": 0.6,
+  "heroContentInsetLeft": "clamp(20px, 4vw, 72px)",
+  "heroOverlayOpacity": 0,
+  "heroImageWashOpacity": 0.3,
+  "navStyle": "glass",
+  "navItems": [
+    { "label": "Top", "target": "#top" },
+    { "label": "Introduction", "target": "#intro" },
+    { "label": "Data Distribution", "target": "#distribution" },
+    { "label": "Question Distribution", "target": "#question-distribution" },
+    { "label": "Benchmark", "target": "#benchmark-performance" }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "collectionDistribution": [
+    {
+      "museum": "台北故宫博物院",
+      "museum_en": "National Palace Museum, Taipei",
+      "paintings": 577
+    },
+    {
+      "museum": "大都会博物馆",
+      "museum_en": "The Metropolitan Museum of Art",
+      "paintings": 229
+    },
+    {
+      "museum": "克利夫兰艺术博物馆",
+      "museum_en": "Cleveland Museum of Art",
+      "paintings": 155
+    },
+    {
+      "museum": "东京国立博物馆",
+      "museum_en": "Tokyo National Museum",
+      "paintings": 54
+    },
+    {
+      "museum": "印第安纳波利斯艺术博物馆",
+      "museum_en": "Indianapolis Museum of Art",
+      "paintings": 50
+    },
+    {
+      "museum": "斯德哥尔摩远东文物博物馆",
+      "museum_en": "Museum of Far Eastern Antiquities, Stockholm",
+      "paintings": 47
+    },
+    {
+      "museum": "京都国立博物馆",
+      "museum_en": "Kyoto National Museum",
+      "paintings": 37
+    },
+    {
+      "museum": "佛利尔·赛克勒美术馆",
+      "museum_en": "Freer and Sackler Galleries",
+      "paintings": 23
+    },
+    {
+      "museum": "芝加哥艺术博物馆",
+      "museum_en": "The Art Institute of Chicago",
+      "paintings": 15
+    },
+    {
+      "museum": "耶鲁大学美术馆",
+      "museum_en": "Yale University Art Gallery",
+      "paintings": 13
+    },
+    {
+      "museum": "布鲁克林博物馆",
+      "museum_en": "Brooklyn Museum",
+      "paintings": 5
+    },
+    {
+      "museum": "洛杉矶县立艺术博物馆",
+      "museum_en": "Los Angeles County Museum of Art",
+      "paintings": 2
+    },
+    {
+      "museum": "底特律艺术博物馆",
+      "museum_en": "Detroit Institute of Arts",
+      "paintings": 1
+    },
+    {
+      "museum": "东京艺术大学",
+      "museum_en": "Tokyo University of the Arts",
+      "paintings": 1
+    },
+    {
+      "museum": "私人藏",
+      "museum_en": "Private Collection",
+      "paintings": 1
+    }
+  ],
+  "datasetTotals": {
+    "totalPaintings": 1210,
+    "sealAnnotations": 8690,
+    "inscriptionAnnotations": 2434,
+    "elementAnnotations": 1279,
+    "techniqueAnnotations": 1312
+  },
+  "annotationSources": {
+    "elements": "/content/annotation-elements.json",
+    "techniques": "/content/annotation-techniques.json",
+    "seals": "/content/annotation-seals.json",
+    "inscriptions": "/content/annotation-inscriptions.json"
+  }
+}

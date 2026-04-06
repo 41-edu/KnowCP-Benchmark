@@ -1,23 +1,89 @@
+import type { CSSProperties } from "react";
 import { siteMeta } from "../data/siteContent";
+import { useJsonContent } from "../hooks/useJsonContent";
+
+interface HeroLinkItem {
+  label: string;
+  target: string;
+}
+
+interface HeroConfig {
+  title: string;
+  subtitle: string;
+  githubUrl: string;
+  huggingFaceUrl: string;
+  coverImage: string;
+  heroHeight?: string;
+  heroBgPosX?: string;
+  heroBgPosY?: string;
+  heroBgWidth?: string;
+  heroBgHeight?: string;
+  heroImageOpacity?: number;
+  heroContentInsetLeft?: string;
+  heroOverlayOpacity?: number;
+  heroImageWashOpacity?: number;
+  hfButtonColor?: string;
+  navStyle?: "solid" | "glass";
+  navItems?: HeroLinkItem[];
+}
 
 export function HeroSection() {
+  const content = useJsonContent<HeroConfig>("/content/site-meta.json", siteMeta as HeroConfig);
+
+  const heroStyle = {
+    ["--hero-bg-image" as string]: `url(${content.coverImage})`,
+    ["--hero-height" as string]: content.heroHeight ?? "78vh",
+    ["--hero-bg-pos-x" as string]: content.heroBgPosX ?? "50%",
+    ["--hero-bg-pos-y" as string]: content.heroBgPosY ?? "42%",
+    ["--hero-bg-width" as string]: content.heroBgWidth ?? "112%",
+    ["--hero-bg-height" as string]: content.heroBgHeight ?? "auto",
+    ["--hero-image-opacity" as string]: content.heroImageOpacity ?? 0.86,
+    ["--hero-content-inset-left" as string]: content.heroContentInsetLeft ?? "clamp(20px, 4vw, 72px)",
+    ["--hf-btn-color" as string]: content.hfButtonColor ?? "#ff8a00",
+    ["--hero-overlay-opacity" as string]: content.heroOverlayOpacity ?? 0,
+    ["--hero-image-wash-opacity" as string]: content.heroImageWashOpacity ?? 0.26,
+  } as CSSProperties;
+
+  const navItems =
+    content.navItems ??
+    [
+      { label: "Top", target: "#top" },
+      { label: "Introduction", target: "#intro" },
+      { label: "Data Distribution", target: "#distribution" },
+      { label: "Question Distribution", target: "#question-distribution" },
+      { label: "Benchmark", target: "#benchmark-performance" },
+    ];
+
   return (
-    <section className="hero-section" id="top">
-      <div className="hero-content">
-        <p className="eyebrow">Dataset Release</p>
-        <h1>{siteMeta.title}</h1>
-        <p className="hero-subtitle">{siteMeta.subtitle}</p>
-        <div className="hero-links">
-          <a href={siteMeta.githubUrl} target="_blank" rel="noreferrer">
-            Project on GitHub
+    <section className="hero-section hero-fullscreen" id="top" style={heroStyle}>
+      <nav className={`top-nav ${content.navStyle === "solid" ? "solid" : "glass"}`}>
+        <div className="top-nav-inner">
+          <a href="#top" className="top-nav-brand">
+            KnowCP
           </a>
-          <a href={siteMeta.huggingFaceUrl} target="_blank" rel="noreferrer">
-            Dataset on Hugging Face
+          <div className="top-nav-links">
+            {navItems.map((item) => (
+              <a key={item.target} href={item.target}>
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      <div className="hero-content">
+        <h1>{content.title}</h1>
+        <p className="hero-subtitle">{content.subtitle}</p>
+        <div className="hero-links">
+          <a href={content.githubUrl} target="_blank" rel="noreferrer" className="github-secondary">
+            <span>Project</span>
+            <img src="/content/GitHub_Invertocat_Black.svg" alt="GitHub" className="hero-link-github-icon" />
+          </a>
+          <a href={content.huggingFaceUrl} target="_blank" rel="noreferrer" className="hf-primary">
+            <span>Dataset</span>
+            <img src="/content/hf-logo.svg" alt="Hugging Face" className="hero-link-hf-icon" />
           </a>
         </div>
-      </div>
-      <div className="hero-cover-wrapper">
-        <img src={siteMeta.coverImage} alt="KnowCP cover" className="hero-cover" />
       </div>
     </section>
   );

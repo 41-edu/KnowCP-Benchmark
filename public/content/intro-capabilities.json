@@ -1,0 +1,17 @@
+[
+  {
+    "id": "cap-detection",
+    "title": "Foundational Knowledge",
+    "description": "Focuses on structured metadata such as title, author, dynasty, museum, and medium. Evaluates the ability to retrieve and reason over core factual information of artworks."
+  },
+  {
+    "id": "cap-understanding",
+    "title": "Visual Content",
+    "description": "Covers recognition of seals, inscriptions, visual elements, and artistic techniques. Tests fine-grained visual understanding and alignment with artistic knowledge."
+  },
+  {
+    "id": "cap-culture",
+    "title": "Deep Reasoning",
+    "description": "Includes visual analysis, cultural context understanding, and provenance research. Evaluates high-level reasoning that connects visual input with historical and scholarly knowledge."
+  }
+]
