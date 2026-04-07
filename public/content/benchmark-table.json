@@ -1,6 +1,6 @@
 {
   "source": "docs/performance.tex",
-  "generatedAt": "2026-04-06T14:21:51.535Z",
+  "generatedAt": "2026-04-07T12:34:53.105776Z",
   "columns": [
     {
       "key": "ittAcc",
@@ -81,7 +81,16 @@
       "techniqueCer": "0.6935",
       "visualAnalysis": "2.9079",
       "culturalContext": "2.4082",
-      "provenanceResearch": "1.3939"
+      "provenanceResearch": "1.3939",
+      "styles": {
+        "mittAcc": "red",
+        "mhqaAcc": "red",
+        "mhqaCer": "red",
+        "elementCer": "blue",
+        "techniqueCer": "blue",
+        "visualAnalysis": "blue",
+        "culturalContext": "red"
+      }
     },
     {
       "group": "Closed-source Models",
@@ -100,7 +109,12 @@
       "techniqueCer": "0.7258",
       "visualAnalysis": "2.5616",
       "culturalContext": "2.1429",
-      "provenanceResearch": "1.4483"
+      "provenanceResearch": "1.4483",
+      "styles": {
+        "ittAcc": "red",
+        "mittAcc": "blue",
+        "provenanceResearch": "blue"
+      }
     },
     {
       "group": "Closed-source Models",
@@ -119,7 +133,10 @@
       "techniqueCer": "0.7222",
       "visualAnalysis": "2.5366",
       "culturalContext": "2.1833",
-      "provenanceResearch": "1.1875"
+      "provenanceResearch": "1.1875",
+      "styles": {
+        "inscriptionCer": "red"
+      }
     },
     {
       "group": "Closed-source Models",
@@ -138,7 +155,16 @@
       "techniqueCer": "0.7889",
       "visualAnalysis": "2.6667",
       "culturalContext": "2.3214",
-      "provenanceResearch": "1.3636"
+      "provenanceResearch": "1.3636",
+      "styles": {
+        "ittAcc": "blue",
+        "mhqaAcc": "blue",
+        "sealAcc": "blue",
+        "sealIou": "blue",
+        "inscriptionAcc": "blue",
+        "inscriptionIou": "blue",
+        "culturalContext": "blue"
+      }
     },
     {
       "group": "Open-source Models",
@@ -157,7 +183,12 @@
       "techniqueCer": "0.7556",
       "visualAnalysis": "2.6452",
       "culturalContext": "2.1579",
-      "provenanceResearch": "1.5001"
+      "provenanceResearch": "1.5001",
+      "styles": {
+        "ttiAcc": "blue",
+        "mhqaCer": "blue",
+        "provenanceResearch": "red"
+      }
     },
     {
       "group": "Open-source Models",
@@ -195,7 +226,10 @@
       "techniqueCer": "0.8889",
       "visualAnalysis": "2.6034",
       "culturalContext": "2.2593",
-      "provenanceResearch": "1.3077"
+      "provenanceResearch": "1.3077",
+      "styles": {
+        "ttiAcc": "red"
+      }
     },
     {
       "group": "Open-source Models",
@@ -328,7 +362,10 @@
       "techniqueCer": "0.9111",
       "visualAnalysis": "2.4545",
       "culturalContext": "2.0500",
-      "provenanceResearch": "1.1429"
+      "provenanceResearch": "1.1429",
+      "styles": {
+        "inscriptionCer": "blue"
+      }
     },
     {
       "group": "Humans",
@@ -347,7 +384,16 @@
       "techniqueCer": "0.0379",
       "visualAnalysis": "3.4729",
       "culturalContext": "2.1254",
-      "provenanceResearch": "1.3352"
+      "provenanceResearch": "1.3352",
+      "styles": {
+        "sealAcc": "red",
+        "sealIou": "red",
+        "inscriptionAcc": "red",
+        "inscriptionIou": "red",
+        "elementCer": "red",
+        "techniqueCer": "red",
+        "visualAnalysis": "red"
+      }
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-06T14:21:50.830Z",
+  "generatedAt": "2026-04-07T12:06:33.693Z",
   "mode": "techniques",
   "hierarchy": {
     "topLevel": [
@@ -6996,13 +6996,13 @@
       "imageId": "IMG000061",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000061_0.jpg",
       "subImagePath": "images/IMG000061_0.jpg",
-      "imageWidth": 50000,
-      "imageHeight": 4579,
+      "imageWidth": 18313,
+      "imageHeight": 3968,
       "bbox": {
-        "x": 0.02692662,
-        "y": 0.20618366455557982,
-        "width": 0.03995300000000001,
-        "height": 0.16937278881851933
+        "x": 0.0735177742587233,
+        "y": 0.23793220766129033,
+        "width": 0.10908371102495497,
+        "height": 0.195453125
       },
       "bboxAbs": {
         "x": 1346.331,
@@ -8161,12 +8161,12 @@
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000102_3.jpg",
       "subImagePath": "images/IMG000102_3.jpg",
       "imageWidth": 1961,
-      "imageHeight": 809,
+      "imageHeight": 802,
       "bbox": {
         "x": 0.27176672145825953,
-        "y": 0.17902397232382664,
+        "y": 0.18058652569822412,
         "width": 0.1409719311562082,
-        "height": 0.3008131407543034
+        "height": 0.3034386918581439
       },
       "bboxAbs": {
         "x": 532.9345407796469,
@@ -8322,13 +8322,13 @@
       "imageId": "IMG000107",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000107_0.jpg",
       "subImagePath": "images/IMG000107_0.jpg",
-      "imageWidth": 1961,
-      "imageHeight": 1312,
+      "imageWidth": 1960,
+      "imageHeight": 1083,
       "bbox": {
-        "x": 0.04486027536970933,
-        "y": 0.41437271341463416,
-        "width": 0.08854207037225904,
-        "height": 0.13068673780487805
+        "x": 0.04488316326530612,
+        "y": 0.5019916897506925,
+        "width": 0.08858724489795917,
+        "height": 0.15832040627885505
       },
       "bboxAbs": {
         "x": 87.971,
@@ -8386,13 +8386,13 @@
       "imageId": "IMG000109",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000109_0.jpg",
       "subImagePath": "images/IMG000109_0.jpg",
-      "imageWidth": 50000,
-      "imageHeight": 4016,
+      "imageWidth": 36471,
+      "imageHeight": 3357,
       "bbox": {
-        "x": 0.211248,
-        "y": 0.16417380478087648,
-        "width": 0.03149236000000001,
-        "height": 0.5617953187250996
+        "x": 0.2896109237476351,
+        "y": 0.19640214477211795,
+        "width": 0.043174522223136204,
+        "height": 0.672079237414358
       },
       "bboxAbs": {
         "x": 10562.4,
@@ -8940,12 +8940,12 @@
       "imageId": "IMG000122",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000122_4.jpg",
       "subImagePath": "images/IMG000122_4.jpg",
-      "imageWidth": 955,
+      "imageWidth": 950,
       "imageHeight": 1200,
       "bbox": {
-        "x": 0.4900274397993408,
+        "x": 0.4926065315877584,
         "y": 0.28995535714285714,
-        "width": 0.4285714285714285,
+        "width": 0.43082706766917284,
         "height": 0.28392857142857136
       },
       "bboxAbs": {
@@ -9164,13 +9164,13 @@
       "imageId": "IMG000128",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000128_5.jpg",
       "subImagePath": "images/IMG000128_5.jpg",
-      "imageWidth": 4000,
-      "imageHeight": 2023,
+      "imageWidth": 3809,
+      "imageHeight": 1568,
       "bbox": {
-        "x": 0.7466995,
-        "y": 0.5984473554127534,
-        "width": 0.1969742500000001,
-        "height": 0.1769871478002965
+        "x": 0.7841422945655027,
+        "y": 0.7721039540816327,
+        "width": 0.20685140456812823,
+        "height": 0.22834502551020397
       },
       "bboxAbs": {
         "x": 2986.798,
@@ -9292,12 +9292,12 @@
       "imageId": "IMG000132",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000132_5.jpg",
       "subImagePath": "images/IMG000132_5.jpg",
-      "imageWidth": 2670,
+      "imageWidth": 1947,
       "imageHeight": 1086,
       "bbox": {
-        "x": 0.4217796349078962,
+        "x": 0.5784035054977313,
         "y": 0.42520869417201707,
-        "width": 0.09490496803306796,
+        "width": 0.13014702858155697,
         "height": 0.3107271268426698
       },
       "bboxAbs": {
@@ -9324,12 +9324,12 @@
       "imageId": "IMG000132",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000132_5.jpg",
       "subImagePath": "images/IMG000132_5.jpg",
-      "imageWidth": 2670,
+      "imageWidth": 1947,
       "imageHeight": 1086,
       "bbox": {
-        "x": 0.2835961950948486,
+        "x": 0.3889069547525659,
         "y": 0.1771098322836906,
-        "width": 0.14633623867039908,
+        "width": 0.2006768142013177,
         "height": 0.2456041843905446
       },
       "bboxAbs": {
@@ -9713,12 +9713,12 @@
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000143_1.jpg",
       "subImagePath": "images/IMG000143_1.jpg",
       "imageWidth": 1200,
-      "imageHeight": 1158,
+      "imageHeight": 1141,
       "bbox": {
         "x": 0.10350468596603751,
-        "y": 0.5043846216603765,
+        "y": 0.5118995546737212,
         "width": 0.27366969593049845,
-        "height": 0.23683244549161206
+        "height": 0.24036106212032143
       },
       "bboxAbs": {
         "x": 124.20562315924501,
@@ -9744,13 +9744,13 @@
       "imageId": "IMG000144",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000144_4.jpg",
       "subImagePath": "images/IMG000144_4.jpg",
-      "imageWidth": 3885,
-      "imageHeight": 2272,
+      "imageWidth": 1947,
+      "imageHeight": 1143,
       "bbox": {
-        "x": 0.16940194898123137,
-        "y": 0.34985753756437526,
-        "width": 0.11963084472204867,
-        "height": 0.10826575202896349
+        "x": 0.3380208381058469,
+        "y": 0.6954298559459848,
+        "width": 0.23870869632519726,
+        "height": 0.2152054143567848
       },
       "bboxAbs": {
         "x": 658.1265717920838,
@@ -10983,12 +10983,12 @@
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000181_3.jpg",
       "subImagePath": "images/IMG000181_3.jpg",
       "imageWidth": 3000,
-      "imageHeight": 1086,
+      "imageHeight": 1075,
       "bbox": {
         "x": 0.40540540540540543,
-        "y": 0.17729960473324632,
+        "y": 0.1791138332467958,
         "width": 0.29259694477085774,
-        "height": 0.4057624763846238
+        "height": 0.40991446451507113
       },
       "bboxAbs": {
         "x": 1216.2162162162163,
@@ -11142,12 +11142,12 @@
       "imageId": "IMG000186",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000186_2.jpg",
       "subImagePath": "images/IMG000186_2.jpg",
-      "imageWidth": 2399,
+      "imageWidth": 2420,
       "imageHeight": 3000,
       "bbox": {
-        "x": 0.23604499420273228,
+        "x": 0.23399666987287385,
         "y": 0.577797243739537,
-        "width": 0.7136759364020725,
+        "width": 0.7074828807556082,
         "height": 0.3874114285714286
       },
       "bboxAbs": {
@@ -14780,13 +14780,13 @@
       "imageId": "IMG000289",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000289_2.jpg",
       "subImagePath": "images/IMG000289_2.jpg",
-      "imageWidth": 6860,
-      "imageHeight": 1413,
+      "imageWidth": 5778,
+      "imageHeight": 1348,
       "bbox": {
-        "x": 0.18714227405247813,
-        "y": 0.007549893842887473,
-        "width": 0.46829460641399406,
-        "height": 0.9466319886765747
+        "x": 0.22218691588785047,
+        "y": 0.007913946587537092,
+        "width": 0.5559884042921425,
+        "height": 0.9922781899109793
       },
       "bboxAbs": {
         "x": 1283.796,
@@ -15787,12 +15787,12 @@
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000317_6.jpg",
       "subImagePath": "images/IMG000317_6.jpg",
       "imageWidth": 3000,
-      "imageHeight": 2250,
+      "imageHeight": 1825,
       "bbox": {
         "x": 0.26049867071939814,
-        "y": 0.2014347860958726,
+        "y": 0.24834425683052785,
         "width": 0.3270563085076825,
-        "height": 0.26054800258473665
+        "height": 0.3212235648304972
       },
       "bboxAbs": {
         "x": 781.4960121581944,
@@ -16995,12 +16995,12 @@
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000351_8.jpg",
       "subImagePath": "images/IMG000351_8.jpg",
       "imageWidth": 5600,
-      "imageHeight": 4167,
+      "imageHeight": 3717,
       "bbox": {
         "x": 0.2036248461684872,
-        "y": 0.7433104798783683,
+        "y": 0.8332996420912457,
         "width": 0.1504689560251288,
-        "height": 0.12979959106844735
+        "height": 0.14551382727528117
       },
       "bboxAbs": {
         "x": 1140.2991385435282,
@@ -17122,13 +17122,13 @@
       "imageId": "IMG000355",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000355_0.jpg",
       "subImagePath": "images/IMG000355_0.jpg",
-      "imageWidth": 2000,
-      "imageHeight": 1335,
+      "imageWidth": 1672,
+      "imageHeight": 1111,
       "bbox": {
-        "x": 0.4907795,
-        "y": 0.1664943820224719,
-        "width": 0.16062400000000002,
-        "height": 0.2819558052434457
+        "x": 0.5870568181818182,
+        "y": 0.20006300630063006,
+        "width": 0.19213397129186605,
+        "height": 0.3388037803780379
       },
       "bboxAbs": {
         "x": 981.559,
@@ -17670,13 +17670,13 @@
       "imageId": "IMG000373",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000373_4.jpg",
       "subImagePath": "images/IMG000373_4.jpg",
-      "imageWidth": 3885,
-      "imageHeight": 2155,
+      "imageWidth": 3891,
+      "imageHeight": 2070,
       "bbox": {
-        "x": 0.45546143760009794,
-        "y": 0.16870316091209742,
-        "width": 0.36837062007449783,
-        "height": 0.4370706225240675
+        "x": 0.45475910693301996,
+        "y": 0.17563058539399512,
+        "width": 0.36780258519388953,
+        "height": 0.4550179669272297
       },
       "bboxAbs": {
         "x": 1769.4676850763806,
@@ -18022,13 +18022,13 @@
       "imageId": "IMG000384",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000384_2.jpg",
       "subImagePath": "images/IMG000384_2.jpg",
-      "imageWidth": 4000,
-      "imageHeight": 1828,
+      "imageWidth": 2000,
+      "imageHeight": 899,
       "bbox": {
-        "x": 0.36396292663317764,
-        "y": 0.1485028508179004,
-        "width": 0.034298309354266,
-        "height": 0.13631713180590688
+        "x": 0.7279258532663553,
+        "y": 0.3019613028866762,
+        "width": 0.068596618708532,
+        "height": 0.27718322240400195
       },
       "bboxAbs": {
         "x": 1455.8517065327105,
@@ -19811,12 +19811,12 @@
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000438_4.jpg",
       "subImagePath": "images/IMG000438_4.jpg",
       "imageWidth": 4000,
-      "imageHeight": 1401,
+      "imageHeight": 1398,
       "bbox": {
         "x": 0.4484019614179201,
-        "y": 0.32565293703424186,
+        "y": 0.32635176307937974,
         "width": 0.07390768921645292,
-        "height": 0.29954300682540164
+        "height": 0.30018580297738745
       },
       "bboxAbs": {
         "x": 1793.6078456716805,
@@ -19906,13 +19906,13 @@
       "imageId": "IMG000441",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000441_3.jpg",
       "subImagePath": "images/IMG000441_3.jpg",
-      "imageWidth": 850,
-      "imageHeight": 484,
+      "imageWidth": 1905,
+      "imageHeight": 864,
       "bbox": {
-        "x": 0.7597865469809874,
-        "y": 0.9201319113293513,
-        "width": 0.17152644701179778,
-        "height": 0.26255455117090304
+        "x": 0.33901237004401014,
+        "y": 0.515444265142831,
+        "width": 0.07653411021523786,
+        "height": 0.1470791698688855
       },
       "bboxAbs": {
         "x": 645.8185649338393,
@@ -19938,13 +19938,13 @@
       "imageId": "IMG000441",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000441_3.jpg",
       "subImagePath": "images/IMG000441_3.jpg",
-      "imageWidth": 850,
-      "imageHeight": 484,
+      "imageWidth": 1905,
+      "imageHeight": 864,
       "bbox": {
-        "x": 1.3310943327559377,
-        "y": 1.3255717249673216,
-        "width": 0.19454916649323503,
-        "height": 0.3044855240054245
+        "x": 0.5939266051666914,
+        "y": 0.7425656422270643,
+        "width": 0.08680671470826759,
+        "height": 0.17056827965118687
       },
       "bboxAbs": {
         "x": 1131.430182842547,
@@ -24550,12 +24550,12 @@
       "imageId": "IMG000578",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000578_2.jpg",
       "subImagePath": "images/IMG000578_2.jpg",
-      "imageWidth": 18100,
+      "imageWidth": 50000,
       "imageHeight": 4731,
       "bbox": {
-        "x": 1.5531066198078232,
+        "x": 0.562224596370432,
         "y": 0.23602158089962771,
-        "width": 0.09327923951102259,
+        "width": 0.033767084702990176,
         "height": 0.5537645360514869
       },
       "bboxAbs": {
@@ -25038,13 +25038,13 @@
       "imageId": "IMG000593",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000593_7.jpg",
       "subImagePath": "images/IMG000593_7.jpg",
-      "imageWidth": 7078,
-      "imageHeight": 4703,
+      "imageWidth": 7010,
+      "imageHeight": 4772,
       "bbox": {
-        "x": 0.1626365317095831,
-        "y": 0.7065574299079617,
-        "width": 0.3173641012392525,
-        "height": 0.28742454238935633
+        "x": 0.16421417566910543,
+        "y": 0.6963410714285716,
+        "width": 0.32044266884043215,
+        "height": 0.2832685714285714
       },
       "bboxAbs": {
         "x": 1151.141371440429,
@@ -27454,13 +27454,13 @@
       "imageId": "IMG000660",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000660_5.png",
       "subImagePath": "images/IMG000660_5.png",
-      "imageWidth": 2831,
-      "imageHeight": 2119,
+      "imageWidth": 2818,
+      "imageHeight": 1859,
       "bbox": {
-        "x": 0.6640310844224656,
-        "y": 0.10066965549787635,
-        "width": 0.32613175556340507,
-        "height": 0.551785747994337
+        "x": 0.6670943931866572,
+        "y": 0.11474932759548144,
+        "width": 0.3276362668559261,
+        "height": 0.6289585798816569
       },
       "bboxAbs": {
         "x": 1879.872,
@@ -27518,13 +27518,13 @@
       "imageId": "IMG000662",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000662_2.png",
       "subImagePath": "images/IMG000662_2.png",
-      "imageWidth": 2834,
-      "imageHeight": 2122,
+      "imageWidth": 2824,
+      "imageHeight": 1432,
       "bbox": {
-        "x": 0.5632999294283698,
-        "y": 0.2213468426013195,
-        "width": 0.3315959774170784,
-        "height": 0.366071630537229
+        "x": 0.5652946175637394,
+        "y": 0.3280013966480447,
+        "width": 0.3327701841359774,
+        "height": 0.5424608938547486
       },
       "bboxAbs": {
         "x": 1596.392,
@@ -28370,13 +28370,13 @@
       "imageId": "IMG000688",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000688_12.png",
       "subImagePath": "images/IMG000688_12.png",
-      "imageWidth": 2832,
-      "imageHeight": 2120,
+      "imageWidth": 2480,
+      "imageHeight": 1811,
       "bbox": {
-        "x": 0.39862005649717513,
-        "y": 0.40485849056603773,
-        "width": 0.2446278248587571,
-        "height": 0.3160712264150944
+        "x": 0.45519838709677424,
+        "y": 0.4739370513528437,
+        "width": 0.2793491935483871,
+        "height": 0.3700005521811155
       },
       "bboxAbs": {
         "x": 1128.892,
@@ -28402,13 +28402,13 @@
       "imageId": "IMG000688",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000688_8.png",
       "subImagePath": "images/IMG000688_8.png",
-      "imageWidth": 2832,
-      "imageHeight": 2120,
+      "imageWidth": 2688,
+      "imageHeight": 1832,
       "bbox": {
-        "x": 0.5411892655367231,
-        "y": 0.2862264150943396,
-        "width": 0.11228813559322035,
-        "height": 0.3035716981132076
+        "x": 0.5701815476190476,
+        "y": 0.3312227074235808,
+        "width": 0.11830357142857142,
+        "height": 0.3512947598253276
       },
       "bboxAbs": {
         "x": 1532.648,
@@ -28434,13 +28434,13 @@
       "imageId": "IMG000688",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000688_0.png",
       "subImagePath": "images/IMG000688_0.png",
-      "imageWidth": 2832,
-      "imageHeight": 2120,
+      "imageWidth": 1799,
+      "imageHeight": 1789,
       "bbox": {
-        "x": 0.24535098870056496,
-        "y": 0.19846367924528302,
-        "width": 0.2420748587570622,
-        "height": 0.09826320754716983
+        "x": 0.38623346303501943,
+        "y": 0.23518334264952487,
+        "width": 0.38107615341856593,
+        "height": 0.1164438233650084
       },
       "bboxAbs": {
         "x": 694.834,
@@ -28630,13 +28630,13 @@
       "imageId": "IMG000694",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000694_0.jpg",
       "subImagePath": "images/IMG000694_0.jpg",
-      "imageWidth": 50000,
-      "imageHeight": 4992,
+      "imageWidth": 31129,
+      "imageHeight": 4426,
       "bbox": {
-        "x": 0.36206847999999997,
-        "y": 0.5973501602564103,
-        "width": 0.044422119999999995,
-        "height": 0.19931370192307687
+        "x": 0.5815613736387292,
+        "y": 0.673739719837325,
+        "width": 0.07135166564939445,
+        "height": 0.22480207862629908
       },
       "bboxAbs": {
         "x": 18103.424,
@@ -29870,13 +29870,13 @@
       "imageId": "IMG000727",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000727_0.jpg",
       "subImagePath": "images/IMG000727_0.jpg",
-      "imageWidth": 50000,
-      "imageHeight": 4992,
+      "imageWidth": 21669,
+      "imageHeight": 4298,
       "bbox": {
-        "x": 0.26433056,
-        "y": 0.05198056891025642,
-        "width": 0.06840032000000003,
-        "height": 0.6533818108974359
+        "x": 0.6099279154552587,
+        "y": 0.060373894834806895,
+        "width": 0.15782989524205093,
+        "height": 0.7588836668217775
       },
       "bboxAbs": {
         "x": 13216.528,
@@ -30422,13 +30422,13 @@
       "imageId": "IMG000744",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000744_6.png",
       "subImagePath": "images/IMG000744_6.png",
-      "imageWidth": 2834,
-      "imageHeight": 2122,
+      "imageWidth": 2811,
+      "imageHeight": 1894,
       "bbox": {
-        "x": 0.09208080451658433,
-        "y": 0.41889632422243167,
-        "width": 0.449258997882851,
-        "height": 0.4125
+        "x": 0.09283422269654927,
+        "y": 0.4693231256599789,
+        "width": 0.45293489861259334,
+        "height": 0.4621568109820485
       },
       "bboxAbs": {
         "x": 260.957,
@@ -33622,13 +33622,13 @@
       "imageId": "IMG000824",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000824_0.png",
       "subImagePath": "images/IMG000824_0.png",
-      "imageWidth": 2834,
-      "imageHeight": 2122,
+      "imageWidth": 2517,
+      "imageHeight": 1907,
       "bbox": {
-        "x": 0.3427558221594919,
-        "y": 0.42749151743638075,
-        "width": 0.22462949894142556,
-        "height": 0.31964278982092376
+        "x": 0.38592371871275327,
+        "y": 0.47568799160985836,
+        "width": 0.2529201430274136,
+        "height": 0.35568012585212383
       },
       "bboxAbs": {
         "x": 971.37,
@@ -34010,13 +34010,13 @@
       "imageId": "IMG000833",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000833_2.jpg",
       "subImagePath": "images/IMG000833_2.jpg",
-      "imageWidth": 17609,
-      "imageHeight": 5574,
+      "imageWidth": 17582,
+      "imageHeight": 4300,
       "bbox": {
-        "x": 0.8987819864841843,
-        "y": 0.5904470757086473,
-        "width": 0.08913618036231473,
-        "height": 0.1808695730175817
+        "x": 0.9001622113525196,
+        "y": 0.7653841860465116,
+        "width": 0.08927306336025481,
+        "height": 0.23445744186046522
       },
       "bboxAbs": {
         "x": 15826.652,
@@ -34074,12 +34074,12 @@
       "imageId": "IMG000835",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000835_1.jpg",
       "subImagePath": "images/IMG000835_1.jpg",
-      "imageWidth": 12305,
+      "imageWidth": 50000,
       "imageHeight": 4282,
       "bbox": {
-        "x": 1.420159829383788,
+        "x": 0.34950133401135025,
         "y": 0.18211122018223075,
-        "width": 0.25564637490581715,
+        "width": 0.0629145728643216,
         "height": 0.38022902931284175
       },
       "bboxAbs": {
@@ -34362,13 +34362,13 @@
       "imageId": "IMG000843",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000843_0.jpg",
       "subImagePath": "images/IMG000843_0.jpg",
-      "imageWidth": 50000,
-      "imageHeight": 5058,
+      "imageWidth": 17930,
+      "imageHeight": 4680,
       "bbox": {
-        "x": 0.18419148000000002,
-        "y": 0.8177831158560696,
-        "width": 0.02814072,
-        "height": 0.10742091735863979
+        "x": 0.513640490797546,
+        "y": 0.883834829059829,
+        "width": 0.07847384272169548,
+        "height": 0.11609722222222223
       },
       "bboxAbs": {
         "x": 9209.574,
@@ -35036,13 +35036,13 @@
       "imageId": "IMG000864",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000864_0.jpg",
       "subImagePath": "images/IMG000864_0.jpg",
-      "imageWidth": 50000,
-      "imageHeight": 2871,
+      "imageWidth": 40287,
+      "imageHeight": 2696,
       "bbox": {
-        "x": 0.51097674,
-        "y": 0.3396635318704284,
-        "width": 0.06452260000000003,
-        "height": 0.59942842215256
+        "x": 0.634170749869685,
+        "y": 0.3617114243323442,
+        "width": 0.08007868543202525,
+        "height": 0.6383379080118694
       },
       "bboxAbs": {
         "x": 25548.837,
@@ -36634,13 +36634,13 @@
       "imageId": "IMG000907",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000907_0.jpg",
       "subImagePath": "images/IMG000907_0.jpg",
-      "imageWidth": 50000,
-      "imageHeight": 3221,
+      "imageWidth": 11218,
+      "imageHeight": 3078,
       "bbox": {
-        "x": 0.12856406,
-        "y": 0.33850046569388387,
-        "width": 0.023718579999999982,
-        "height": 0.5023564110524682
+        "x": 0.5730257621679444,
+        "y": 0.3542267706302794,
+        "width": 0.1057166161526118,
+        "height": 0.525695256660169
       },
       "bboxAbs": {
         "x": 6428.203,
@@ -37090,13 +37090,13 @@
       "imageId": "IMG000919",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000919_0.jpg",
       "subImagePath": "images/IMG000919_0.jpg",
-      "imageWidth": 1806,
-      "imageHeight": 1972,
+      "imageWidth": 3978,
+      "imageHeight": 377,
       "bbox": {
-        "x": 0.026833333333333334,
-        "y": 0.026428498985801217,
-        "width": 0.24200553709856035,
-        "height": 0.43095486815415823
+        "x": 0.01218225238813474,
+        "y": 0.13824137931034483,
+        "width": 0.10986978381096028,
+        "height": 2.2542254641909816
       },
       "bboxAbs": {
         "x": 48.461,
@@ -37352,13 +37352,13 @@
       "imageId": "IMG000926",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000926_1.png",
       "subImagePath": "images/IMG000926_1.png",
-      "imageWidth": 2832,
-      "imageHeight": 2120,
+      "imageWidth": 2806,
+      "imageHeight": 1629,
       "bbox": {
-        "x": 0.5951889124293785,
-        "y": 0.25909716981132075,
-        "width": 0.1564791666666667,
-        "height": 0.4502245283018868
+        "x": 0.6007038488952245,
+        "y": 0.33719214241866174,
+        "width": 0.1579290805416964,
+        "height": 0.5859275629220381
       },
       "bboxAbs": {
         "x": 1685.575,
@@ -38482,13 +38482,13 @@
       "imageId": "IMG000959",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000959_0.png",
       "subImagePath": "images/IMG000959_0.png",
-      "imageWidth": 2832,
-      "imageHeight": 2120,
+      "imageWidth": 1644,
+      "imageHeight": 1836,
       "bbox": {
-        "x": 0.08015324858757063,
-        "y": 0.03844150943396226,
-        "width": 0.3654141949152543,
-        "height": 0.4993858490566037
+        "x": 0.1380742092457421,
+        "y": 0.04438779956427015,
+        "width": 0.6294726277372263,
+        "height": 0.5766328976034858
       },
       "bboxAbs": {
         "x": 226.994,
@@ -38650,13 +38650,13 @@
       "imageId": "IMG000963",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG000963_5.png",
       "subImagePath": "images/IMG000963_5.png",
-      "imageWidth": 2827,
-      "imageHeight": 2127,
+      "imageWidth": 2810,
+      "imageHeight": 1622,
       "bbox": {
-        "x": 0.2158885744605589,
-        "y": 0.49745086976962855,
-        "width": 0.07363247258577997,
-        "height": 0.06032816173013633
+        "x": 0.2171946619217082,
+        "y": 0.6523292231812577,
+        "width": 0.0740779359430605,
+        "height": 0.07911097410604191
       },
       "bboxAbs": {
         "x": 610.317,
@@ -40856,13 +40856,13 @@
       "imageId": "IMG001021",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG001021_0.png",
       "subImagePath": "images/IMG001021_0.png",
-      "imageWidth": 2832,
-      "imageHeight": 2120,
+      "imageWidth": 1613,
+      "imageHeight": 1815,
       "bbox": {
-        "x": 0.03400918079096045,
-        "y": 0.4448278301886792,
-        "width": 0.18994138418079096,
-        "height": 0.24505047169811317
+        "x": 0.05971109733415995,
+        "y": 0.5195785123966942,
+        "width": 0.333486670799752,
+        "height": 0.2862297520661157
       },
       "bboxAbs": {
         "x": 96.314,
@@ -42302,13 +42302,13 @@
       "imageId": "IMG001058",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG001058_1.png",
       "subImagePath": "images/IMG001058_1.png",
-      "imageWidth": 2832,
-      "imageHeight": 2120,
+      "imageWidth": 2828,
+      "imageHeight": 1823,
       "bbox": {
-        "x": 0.3050787429378531,
-        "y": 0.6741169811320754,
-        "width": 0.433964336158192,
-        "height": 0.14583915094339628
+        "x": 0.30551025459688824,
+        "y": 0.7839429511793746,
+        "width": 0.43457814710042425,
+        "height": 0.16959901261656615
       },
       "bboxAbs": {
         "x": 863.983,
@@ -43072,13 +43072,13 @@
       "imageId": "IMG001081",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG001081_0.jpg",
       "subImagePath": "images/IMG001081_0.jpg",
-      "imageWidth": 3056,
-      "imageHeight": 2288,
+      "imageWidth": 3037,
+      "imageHeight": 1954,
       "bbox": {
-        "x": 0.24313350785340312,
-        "y": 0.02890603146853147,
-        "width": 0.16902388743455501,
-        "height": 0.10894187062937064
+        "x": 0.24465459334869935,
+        "y": 0.03384698055271239,
+        "width": 0.17008133026012517,
+        "height": 0.1275634595701126
       },
       "bboxAbs": {
         "x": 743.016,
@@ -47537,12 +47537,12 @@
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG001206_1.jpg",
       "subImagePath": "images/IMG001206_1.jpg",
       "imageWidth": 1200,
-      "imageHeight": 671,
+      "imageHeight": 668,
       "bbox": {
         "x": 0.03663098392352387,
-        "y": 0.11692003205998322,
+        "y": 0.11744512202432446,
         "width": 0.24851939698492473,
-        "height": 0.7316587707539188
+        "height": 0.7349446634369454
       },
       "bboxAbs": {
         "x": 43.95718070822864,
@@ -47569,12 +47569,12 @@
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG001206_1.jpg",
       "subImagePath": "images/IMG001206_1.jpg",
       "imageWidth": 1200,
-      "imageHeight": 671,
+      "imageHeight": 668,
       "bbox": {
         "x": 0.3390744010089511,
-        "y": 0.6703811079311424,
+        "y": 0.6733918015296355,
         "width": 0.062129849246231196,
-        "height": 0.1572332601906703
+        "height": 0.15793939758673617
       },
       "bboxAbs": {
         "x": 406.8892812107413,
@@ -47600,13 +47600,13 @@
       "imageId": "IMG001207",
       "imageUrl": "https://huggingface.co/datasets/g41/KnowCP/resolve/main/images/IMG001207_8.jpg",
       "subImagePath": "images/IMG001207_8.jpg",
-      "imageWidth": 3550,
-      "imageHeight": 2257,
+      "imageWidth": 3919,
+      "imageHeight": 2182,
       "bbox": {
-        "x": 0.5350212797696393,
-        "y": 0.527473061927647,
-        "width": 0.514803878547668,
-        "height": 0.40835368691040497
+        "x": 0.4846454562853329,
+        "y": 0.5456034375667732,
+        "width": 0.4663316582914573,
+        "height": 0.4223896752322566
       },
       "bboxAbs": {
         "x": 1899.3255431822197,

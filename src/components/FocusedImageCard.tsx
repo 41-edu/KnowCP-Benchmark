@@ -1,4 +1,5 @@
 import type { PanoramaImage } from "../types";
+import { LoadableImage } from "./LoadableImage";
 
 interface FocusedImageCardProps {
   image: PanoramaImage;
@@ -17,8 +18,21 @@ export function FocusedImageCard({ image, onClick }: FocusedImageCardProps) {
   return (
     <button className="focus-card" onClick={() => onClick(image)}>
       <div className="focus-image-shell">
-        <img src={image.imageUrl} alt={image.title} className="focus-image blur-layer" />
-        <img src={image.imageUrl} alt={image.title} className="focus-image clear-layer" style={focusStyle} />
+        <LoadableImage
+          src={image.imageUrl}
+          alt={image.title}
+          className="focus-image-inner"
+          wrapperClassName="focus-image blur-layer"
+          loading="lazy"
+        />
+        <LoadableImage
+          src={image.imageUrl}
+          alt={image.title}
+          className="focus-image-inner"
+          wrapperClassName="focus-image clear-layer"
+          wrapperStyle={focusStyle}
+          loading="lazy"
+        />
         <div className="focus-highlight" style={focusStyle} />
       </div>
       <span>{image.title}</span>

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useJsonContent } from "../hooks/useJsonContent";
+import { useLocale } from "../hooks/useLocale";
 
 interface BenchmarkColumn {
   key: string;
@@ -8,8 +9,9 @@ interface BenchmarkColumn {
 
 interface BenchmarkRow {
   group?: string;
+  styles?: Record<string, string>;
   model: string;
-  [key: string]: string | number | undefined;
+  [key: string]: string | number | Record<string, string> | undefined;
 }
 
 interface BenchmarkTablePayload {
@@ -152,6 +154,7 @@ const subtypeSpecs: SubtypeSpec[] = [
 ];
 
 export function BenchmarkPerformanceSection() {
+  const { t } = useLocale();
   const payload = useJsonContent<BenchmarkTablePayload>("/content/benchmark-table.json", fallbackPayload);
   const questionSection = useJsonContent<QuestionSectionPayload>(
     "/content/question-section.json",
@@ -178,9 +181,9 @@ export function BenchmarkPerformanceSection() {
     }));
 
     const fallbackCategories = [
-      { id: "foundational-knowledge", label: "Foundational Knowledge" },
-      { id: "visual-content", label: "Visual Content" },
-      { id: "deep-reasoning", label: "Deep Reasoning" },
+      { id: "foundational-knowledge", label: t("benchmark.foundationalKnowledge") },
+      { id: "visual-content", label: t("benchmark.visualContent") },
+      { id: "deep-reasoning", label: t("benchmark.deepReasoning") },
     ];
 
     const base = fromQuestionSection.length
@@ -190,6 +193,14 @@ export function BenchmarkPerformanceSection() {
     return base
       .map((category) => {
         const specs = subtypeSpecs.filter((spec) => spec.categoryId === category.id);
+        const translatedCategoryLabel =
+          category.id === "foundational-knowledge"
+            ? t("benchmark.foundationalKnowledge")
+            : category.id === "visual-content"
+              ? t("benchmark.visualContent")
+              : category.id === "deep-reasoning"
+                ? t("benchmark.deepReasoning")
+                : category.label;
         const subtypeMap = new Map(category.subtypes.map((subtype) => [subtype.shortName, subtype.label]));
         const availableSubtypes = specs
           .map((spec) => {
@@ -200,18 +211,18 @@ export function BenchmarkPerformanceSection() {
             return {
               ...spec,
               metrics,
-              label: subtypeMap.get(spec.shortName) || spec.shortName,
+              label: t(`benchmark.subtypes.${spec.shortName}`, subtypeMap.get(spec.shortName) || spec.shortName),
             };
           })
           .filter((item): item is SubtypeSpec & { label: string } => Boolean(item));
         return {
           id: category.id,
-          label: category.label,
+          label: translatedCategoryLabel,
           subtypes: availableSubtypes,
         };
       })
       .filter((category) => category.subtypes.length > 0);
-  }, [columnByKey, questionSection.categories]);
+  }, [columnByKey, questionSection.categories, t]);
 
   useEffect(() => {
     if (!categories.length) {
@@ -252,7 +263,7 @@ export function BenchmarkPerformanceSection() {
   return (
     <section className="section-block" id="benchmark-performance">
       <div className="section-head center-head">
-        <h2>Benchmark Performance</h2>
+        <h2>{t("benchmark.title")}</h2>
       </div>
 
       <div className="benchmark-filter-row">
@@ -278,7 +289,7 @@ export function BenchmarkPerformanceSection() {
             className={`benchmark-filter-btn ${activeSubtypeShort === "all" ? "active" : ""}`}
             onClick={() => setActiveSubtypeShort("all")}
           >
-            All
+            {t("common.all")}
           </button>
           {activeCategory.subtypes.map((subtype) => (
             <button
@@ -287,7 +298,7 @@ export function BenchmarkPerformanceSection() {
               className={`benchmark-filter-btn ${activeSubtypeShort === subtype.shortName ? "active" : ""}`}
               onClick={() => setActiveSubtypeShort(subtype.shortName)}
             >
-              {subtype.shortName}
+              {subtype.label}
             </button>
           ))}
         </div>
@@ -297,10 +308,10 @@ export function BenchmarkPerformanceSection() {
         <table className="benchmark-table">
           <thead>
             <tr>
-              <th rowSpan={2}>Model</th>
+              <th rowSpan={2}>{t("common.model")}</th>
               {visibleGroups.map((group) => (
                 <th key={group.shortName} colSpan={group.metrics.length} className="benchmark-group-head">
-                  {group.groupLabel}
+                  {group.label}
                 </th>
               ))}
             </tr>
@@ -316,9 +327,15 @@ export function BenchmarkPerformanceSection() {
             {rows.map((record) => (
               <tr key={record.model}>
                 <td>{record.model}</td>
-                {flatColumns.map((column) => (
-                  <td key={`${record.model}-${column.key}`}>{String(record[column.key] ?? "-")}</td>
-                ))}
+                {flatColumns.map((column) => {
+                  const color = String(record.styles?.[column.key] || "").toLowerCase();
+                  const className = color === "red" ? "benchmark-cell-red" : color === "blue" ? "benchmark-cell-blue" : "";
+                  return (
+                    <td key={`${record.model}-${column.key}`} className={className}>
+                      {String(record[column.key] ?? "-")}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>

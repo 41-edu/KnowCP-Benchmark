@@ -1,7 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import ReactECharts from "echarts-for-react";
+import { LoadableImage } from "./LoadableImage";
+import { TranslatedText } from "./TranslatedText";
 import { useJsonContent } from "../hooks/useJsonContent";
+import { useLocale } from "../hooks/useLocale";
 import { resolvePublicUrl } from "../utils/url";
+import tagOrder from "../../docs/tag.json";
 
 type ExplorerMode = "elements" | "techniques" | "seals" | "inscriptions";
 
@@ -69,7 +73,7 @@ const EMPTY_HIERARCHY: HierarchyPayload = {
 
 const EMPTY_FLAT: FlatPayload = { samples: [] };
 
-function CropPreview({ sample }: { sample: AnnotationSample }) {
+function CropPreview({ sample, loadingText }: { sample: AnnotationSample; loadingText: string }) {
   const x1 = Math.max(0, Math.min(1, sample.bbox.x));
   const y1 = Math.max(0, Math.min(1, sample.bbox.y));
   const x2 = Math.max(x1, Math.min(1, sample.bbox.x + sample.bbox.width));
@@ -114,12 +118,15 @@ function CropPreview({ sample }: { sample: AnnotationSample }) {
 
   return (
     <div className="annotation-crop-shell">
-      <img
-        src={sample.imageUrl}
+      <LoadableImage
+        src={resolvePublicUrl(sample.imageUrl)}
         alt={sample.imageId}
+        wrapperClassName="annotation-crop-loadable"
         style={imgStyle}
         className="annotation-crop-image"
         loading="lazy"
+        loadingText={loadingText}
+        errorText={loadingText}
       />
     </div>
   );
@@ -129,10 +136,16 @@ function FullImageViewer({
   viewer,
   onClose,
   onChange,
+  loadingText,
+  loadingErrorText,
+  t,
 }: {
   viewer: ViewerState;
   onClose: () => void;
   onChange: (index: number) => void;
+  loadingText: string;
+  loadingErrorText: string;
+  t: (key: string, fallback?: string) => string;
 }) {
   const sample = viewer.samples[viewer.index];
   const viewportRef = useRef<HTMLDivElement | null>(null);
@@ -157,11 +170,7 @@ function FullImageViewer({
   };
 
   useEffect(() => {
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prevOverflow;
-    };
+    return undefined;
   }, []);
 
   useEffect(() => {
@@ -189,8 +198,9 @@ function FullImageViewer({
   };
 
   const handleWheel: React.WheelEventHandler<HTMLDivElement> = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+    if (event.cancelable) {
+      event.preventDefault();
+    }
     const next = event.deltaY < 0 ? zoom * 1.12 : zoom / 1.12;
     const clampedZoom = Math.max(0.6, Math.min(6, next));
     setZoom(clampedZoom);
@@ -278,14 +288,15 @@ function FullImageViewer({
               transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
             }}
           >
-            <img
-              ref={imageRef}
-              src={sample.imageUrl}
+            <LoadableImage
+              src={resolvePublicUrl(sample.imageUrl)}
               alt={sample.imageId}
               className="annotation-viewer-image"
               draggable={false}
               loading="lazy"
               onLoad={handleImageLoad}
+              loadingText={loadingText}
+              errorText={loadingErrorText}
             />
             <div className="annotation-viewer-bbox" style={bboxStyle} />
           </div>
@@ -296,13 +307,13 @@ function FullImageViewer({
             type="button"
             onClick={() => onChange((viewer.index - 1 + viewer.samples.length) % viewer.samples.length)}
           >
-            Previous
+            {t("common.previous")}
           </button>
           <span>
             {viewer.index + 1} / {viewer.samples.length}
           </span>
           <button type="button" onClick={() => onChange((viewer.index + 1) % viewer.samples.length)}>
-            Next
+            {t("common.next")}
           </button>
           <button
             type="button"
@@ -311,10 +322,10 @@ function FullImageViewer({
               setOffset({ x: 0, y: 0 });
             }}
           >
-            Reset Zoom
+            {t("explorer.resetZoom")}
           </button>
           <button type="button" onClick={onClose}>
-            Back to Explorer
+            {t("explorer.backToExplorer")}
           </button>
         </div>
       </div>
@@ -323,6 +334,7 @@ function FullImageViewer({
 }
 
 export function DataDistributionSection() {
+  const { locale, t } = useLocale();
   const summary = useJsonContent<DistributionSummary>("/content/data-distribution.json", {
     collectionDistribution: [],
     datasetTotals: {
@@ -532,8 +544,24 @@ export function DataDistributionSection() {
       ];
     })();
 
-    const xLabels = grouped.map((item) => item.museum_en || item.museum);
-    const fullNames = grouped.map((item) => item.museum_en || item.museum);
+    const xLabels = grouped.map((item) => {
+      if (item.museum_en === "others") {
+        return t("data.others");
+      }
+      if (locale === "zh") {
+        return item.museum || item.museum_en;
+      }
+      return item.museum_en || item.museum;
+    });
+    const fullNames = grouped.map((item) => {
+      if (item.museum_en === "others") {
+        return t("data.others");
+      }
+      if (locale === "zh") {
+        return item.museum || item.museum_en;
+      }
+      return item.museum_en || item.museum;
+    });
     const values = grouped.map((item) => item.paintings);
 
     return {
@@ -548,31 +576,35 @@ export function DataDistributionSection() {
             | undefined;
           if (row?.museum_en === "others" && Array.isArray(row._othersItems)) {
             const details = row._othersItems
-              .map((m) => `${m.museum_en || m.museum}: ${Number(m.paintings || 0).toLocaleString()}`)
+              .map((m) => `${locale === "zh" ? m.museum || m.museum_en : m.museum_en || m.museum}: ${Number(m.paintings || 0).toLocaleString()}`)
               .join("<br/>");
-            return `others<br/>Paintings: ${value}<br/><br/>${details}`;
+            return `${t("data.others")}<br/>${t("data.paintings")}: ${value}<br/><br/>${details}`;
           }
-          return `${full}<br/>Paintings: ${value}`;
+          const fullName = full === "Unknown Museum" ? t("data.unknownMuseum") : full;
+          return `${fullName}<br/>${t("data.paintings")}: ${value}`;
         },
       },
-      grid: { left: "3%", right: "3%", top: 20, bottom: 56, containLabel: true },
+      grid: { left: 72, right: 22, top: 20, bottom: locale === "zh" ? 82 : 56, containLabel: true },
       xAxis: {
         type: "category",
         data: xLabels,
         boundaryGap: true,
         axisLabel: {
           interval: 0,
-          rotate: 0,
+          rotate: locale === "zh" ? 28 : 0,
           formatter: (value: string) => formatMuseumLabel(value),
-          lineHeight: 14,
-          fontSize: 10,
+          lineHeight: locale === "zh" ? 12 : 14,
+          fontSize: locale === "zh" ? 9 : 10,
           margin: 8,
+          hideOverlap: true,
         },
         axisTick: { alignWithLabel: true },
       },
       yAxis: {
         type: "value",
-        name: "Count",
+        name: t("data.count"),
+        nameLocation: "middle",
+        nameGap: 46,
       },
       series: [
         {
@@ -593,7 +625,7 @@ export function DataDistributionSection() {
         },
       ],
     };
-  }, [summary.collectionDistribution]);
+  }, [locale, summary.collectionDistribution, t]);
 
   const elementsNodeMap = useMemo(
     () => new Map(elementsData.hierarchy.nodes.map((node) => [node.key, node])),
@@ -612,11 +644,31 @@ export function DataDistributionSection() {
     [techniquesData.samples],
   );
 
+  const elementTopLevelOrder = useMemo(() => Object.keys(tagOrder || {}), []);
+
+  const orderedElementsTopLevel = useMemo(() => {
+    const rank = new Map(elementTopLevelOrder.map((name, index) => [name, index]));
+    return [...elementsData.hierarchy.topLevel].sort((a, b) => {
+      const ra = rank.get(a);
+      const rb = rank.get(b);
+      if (ra !== undefined && rb !== undefined) {
+        return ra - rb;
+      }
+      if (ra !== undefined) {
+        return -1;
+      }
+      if (rb !== undefined) {
+        return 1;
+      }
+      return a.localeCompare(b, "zh-Hans-CN");
+    });
+  }, [elementTopLevelOrder, elementsData.hierarchy.topLevel]);
+
   useEffect(() => {
-    if (!elementsPath.l1 && elementsData.hierarchy.topLevel[0]) {
-      setElementsPath({ l1: elementsData.hierarchy.topLevel[0], l2: "", l3: "" });
+    if (!elementsPath.l1 && orderedElementsTopLevel[0]) {
+      setElementsPath({ l1: orderedElementsTopLevel[0], l2: "", l3: "" });
     }
-  }, [elementsData.hierarchy.topLevel, elementsPath.l1]);
+  }, [orderedElementsTopLevel, elementsPath.l1]);
 
   useEffect(() => {
     if (!techniquesPath.l1 && techniquesData.hierarchy.topLevel[0]) {
@@ -655,6 +707,16 @@ export function DataDistributionSection() {
     hierarchyContext && hierarchyContext.path.l2
       ? hierarchyContext.nodeMap.get(hierarchyContext.path.l2)?.childKeys || []
       : [];
+
+  const level1Keys = useMemo(() => {
+    if (!hierarchyContext) {
+      return [];
+    }
+    if (mode === "elements") {
+      return orderedElementsTopLevel;
+    }
+    return hierarchyContext.data.hierarchy.topLevel;
+  }, [hierarchyContext, mode, orderedElementsTopLevel]);
 
   const selectedNodeKey = hierarchyContext
     ? hierarchyContext.path.l3 || hierarchyContext.path.l2 || hierarchyContext.path.l1
@@ -712,18 +774,18 @@ export function DataDistributionSection() {
   return (
     <section className="section-block" id="distribution">
       <div className="section-head center-head">
-        <h2>Data Distribution</h2>
+        <h2>{t("data.title")}</h2>
       </div>
 
       <div className="subsection-card">
-        <h3 className="subsection-title">Collection Distribution</h3>
+        <h3 className="subsection-title">{t("data.collectionDistribution")}</h3>
         <div className="collection-chart-wrap">
           <ReactECharts option={collectionChartOption} style={{ height: 268 }} />
         </div>
       </div>
 
       <div className="subsection-card">
-        <h3 className="subsection-title">Annotation Distribution</h3>
+        <h3 className="subsection-title">{t("data.annotationDistribution")}</h3>
         <table className="distribution-table">
           <colgroup>
             <col />
@@ -734,11 +796,11 @@ export function DataDistributionSection() {
           </colgroup>
           <thead>
             <tr>
-              <th>Total Paintings</th>
-              <th>Seals</th>
-              <th>Inscriptions</th>
-              <th>Elements</th>
-              <th>Techniques</th>
+              <th>{t("data.totalPaintings")}</th>
+              <th>{t("data.seals")}</th>
+              <th>{t("data.inscriptions")}</th>
+              <th>{t("data.elements")}</th>
+              <th>{t("data.techniques")}</th>
             </tr>
           </thead>
           <tbody>
@@ -759,27 +821,13 @@ export function DataDistributionSection() {
             viewer={viewer}
             onClose={() => setViewer(null)}
             onChange={(index) => setViewer((prev) => (prev ? { ...prev, index } : prev))}
+            loadingText={t("common.loading")}
+            loadingErrorText={t("common.loadFailed")}
+            t={t}
           />
         ) : (
           <>
             <div className="explorer-panel">
-              <div className="explorer-side-tabs">
-                <button
-                  type="button"
-                  className={`explorer-side-tab ${mode === "seals" ? "active" : ""}`}
-                  onClick={() => setMode("seals")}
-                >
-                  Seals
-                </button>
-                <button
-                  type="button"
-                  className={`explorer-side-tab ${mode === "inscriptions" ? "active" : ""}`}
-                  onClick={() => setMode("inscriptions")}
-                >
-                  Inscriptions
-                </button>
-              </div>
-
               <div className="explorer-main">
                 <div className="explorer-top-tabs">
                   <button
@@ -787,21 +835,35 @@ export function DataDistributionSection() {
                     className={`explorer-main-tab ${mode === "elements" ? "active" : ""}`}
                     onClick={() => setMode("elements")}
                   >
-                    Elements
+                    {t("data.elements")}
                   </button>
                   <button
                     type="button"
                     className={`explorer-main-tab ${mode === "techniques" ? "active" : ""}`}
                     onClick={() => setMode("techniques")}
                   >
-                    Techniques
+                    {t("data.techniques")}
+                  </button>
+                  <button
+                    type="button"
+                    className={`explorer-main-tab ${mode === "seals" ? "active" : ""}`}
+                    onClick={() => setMode("seals")}
+                  >
+                    {t("data.seals")}
+                  </button>
+                  <button
+                    type="button"
+                    className={`explorer-main-tab ${mode === "inscriptions" ? "active" : ""}`}
+                    onClick={() => setMode("inscriptions")}
+                  >
+                    {t("data.inscriptions")}
                   </button>
                 </div>
 
                 {(mode === "elements" || mode === "techniques") && hierarchyContext && (
                   <div className="hierarchy-rows">
                     <div className="hierarchy-row level-1">
-                      {hierarchyContext.data.hierarchy.topLevel.map((key) => {
+                      {level1Keys.map((key) => {
                         const node = hierarchyContext.nodeMap.get(key);
                         if (!node) {
                           return null;
@@ -813,7 +875,7 @@ export function DataDistributionSection() {
                             className={hierarchyContext.path.l1 === key ? "active" : ""}
                             onClick={() => hierarchyContext.setPath({ l1: key, l2: "", l3: "" })}
                           >
-                            {node.label}
+                            <TranslatedText text={node.label} /> <span className="hierarchy-count">({node.count})</span>
                           </button>
                         );
                       })}
@@ -839,7 +901,7 @@ export function DataDistributionSection() {
                                 }))
                               }
                             >
-                              {node.label}
+                              <TranslatedText text={node.label} /> <span className="hierarchy-count">({node.count})</span>
                             </button>
                           );
                         })}
@@ -865,7 +927,7 @@ export function DataDistributionSection() {
                                 }))
                               }
                             >
-                              {node.label}
+                              <TranslatedText text={node.label} /> <span className="hierarchy-count">({node.count})</span>
                             </button>
                           );
                         })}
@@ -882,25 +944,37 @@ export function DataDistributionSection() {
                       type="button"
                       onClick={() => openViewer(sample)}
                     >
-                      <CropPreview sample={sample} />
+                      <CropPreview sample={sample} loadingText={t("common.loading")} />
                       <span className="annotation-sample-label">
-                        {sample.pathLevels.length ? sample.pathLevels.join(" / ") : sample.imageId}
+                        {sample.pathLevels.length ? (
+                          sample.pathLevels.map((level, index) => (
+                            <Fragment key={`${sample.id}-${level}-${index}`}>
+                              <TranslatedText text={level} />
+                              {index < sample.pathLevels.length - 1 ? " / " : ""}
+                            </Fragment>
+                          ))
+                        ) : (
+                          sample.imageId
+                        )}
                       </span>
                     </button>
                   ))}
                 </div>
 
                 <div className="explorer-footer">
+                  <span className="explorer-total">
+                    {t("data.imagesInSelection")}: {allModeSamples.length.toLocaleString(locale === "zh" ? "zh-CN" : "en-US")}
+                  </span>
                   <div className="explorer-pagination">
                     <button type="button" onClick={() => setPage(1)} disabled={clampedPage <= 1}>
-                      First
+                      {t("common.first")}
                     </button>
                     <button
                       type="button"
                       onClick={() => setPage((prev) => Math.max(1, prev - 1))}
                       disabled={clampedPage <= 1}
                     >
-                      Previous
+                      {t("common.previous")}
                     </button>
                     <span>
                       {clampedPage} / {totalPages}
@@ -910,14 +984,14 @@ export function DataDistributionSection() {
                       onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
                       disabled={clampedPage >= totalPages}
                     >
-                      Next
+                      {t("common.next")}
                     </button>
                     <button
                       type="button"
                       onClick={() => setPage(totalPages)}
                       disabled={clampedPage >= totalPages}
                     >
-                      Last
+                      {t("common.last")}
                     </button>
                   </div>
                 </div>

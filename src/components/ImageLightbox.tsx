@@ -1,4 +1,6 @@
 import type { PanoramaImage } from "../types";
+import { useLocale } from "../hooks/useLocale";
+import { LoadableImage } from "./LoadableImage";
 
 interface ImageLightboxProps {
   images: PanoramaImage[];
@@ -15,6 +17,7 @@ export function ImageLightbox({
   onPrev,
   onNext,
 }: ImageLightboxProps) {
+  const { t } = useLocale();
   const image = images[selectedIndex];
 
   if (!image) {
@@ -24,14 +27,20 @@ export function ImageLightbox({
   return (
     <div className="lightbox" onClick={onClose} role="presentation">
       <div className="lightbox-content" onClick={(event) => event.stopPropagation()}>
-        <img src={image.imageUrl} alt={image.title} className="lightbox-image" />
+        <LoadableImage
+          src={image.imageUrl}
+          alt={image.title}
+          className="lightbox-image"
+          loadingText={t("common.loading")}
+          errorText={t("common.loadFailed")}
+        />
         <div className="lightbox-toolbar">
-          <button onClick={onPrev}>Previous</button>
+          <button onClick={onPrev}>{t("common.previous")}</button>
           <span>
             {selectedIndex + 1} / {images.length}
           </span>
-          <button onClick={onNext}>Next</button>
-          <button onClick={onClose}>Close</button>
+          <button onClick={onNext}>{t("common.next")}</button>
+          <button onClick={onClose}>{t("common.close")}</button>
         </div>
       </div>
     </div>

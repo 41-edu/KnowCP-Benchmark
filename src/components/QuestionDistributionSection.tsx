@@ -1,6 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import ReactECharts from "echarts-for-react";
+import { LoadableImage } from "./LoadableImage";
+import { TranslatedText } from "./TranslatedText";
 import { useJsonContent } from "../hooks/useJsonContent";
+import { useLocale } from "../hooks/useLocale";
 import { resolvePublicUrl } from "../utils/url";
 
 interface ChartBar {
@@ -45,6 +48,13 @@ interface QuestionSectionContent {
   categories: CategoryRef[];
 }
 
+interface DistributionSummaryLite {
+  datasetTotals: {
+    sealAnnotations: number;
+    inscriptionAnnotations: number;
+  };
+}
+
 interface CaseQuestion {
   qid: string;
   imageId: string;
@@ -77,14 +87,29 @@ interface CasePayload {
   groups: CaseGroup[];
 }
 
+interface GroundTruthBox {
+  id: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 const fallbackContent: QuestionSectionContent = {
   chart: [],
   categories: [],
 };
 
-function formatAnswer(answer: unknown): string {
+const fallbackDistributionSummary: DistributionSummaryLite = {
+  datasetTotals: {
+    sealAnnotations: 0,
+    inscriptionAnnotations: 0,
+  },
+};
+
+function formatAnswer(answer: unknown, noAnswerText: string): string {
   if (answer === null || answer === undefined) {
-    return "No answer loaded.";
+    return noAnswerText;
   }
   if (typeof answer === "string") {
     return answer.replace(/\\n/g, "\n");
@@ -93,7 +118,7 @@ function formatAnswer(answer: unknown): string {
     return String(answer);
   }
   if (Array.isArray(answer)) {
-    return answer.map((item) => formatAnswer(item)).join(" / ");
+    return answer.map((item) => formatAnswer(item, noAnswerText)).join(" / ");
   }
   try {
     return JSON.stringify(answer, null, 2);
@@ -117,6 +142,57 @@ function normalizeImageKey(url: string): string {
   const noQuery = text.split("?")[0].split("#")[0];
   const segments = noQuery.split("/").filter(Boolean);
   return (segments[segments.length - 1] || noQuery).toLowerCase();
+}
+
+function parseGroundTruthBoxes(question: CaseQuestion | undefined, activeImageUrl: string): GroundTruthBox[] {
+  if (!question) {
+    return [];
+  }
+
+  const answer = question.answer as
+    | { items?: Array<{ bbox?: unknown; sub_image_path?: string }> }
+    | undefined;
+  const items = Array.isArray(answer?.items) ? answer.items : [];
+  const activeKey = normalizeImageKey(activeImageUrl);
+
+  return items
+    .map((item, index) => {
+      const subImageKey = item?.sub_image_path ? normalizeImageKey(String(item.sub_image_path)) : "";
+      if (subImageKey && activeKey && subImageKey !== activeKey) {
+        return null;
+      }
+
+      const box = Array.isArray(item?.bbox) ? item.bbox : [];
+      if (box.length < 4) {
+        return null;
+      }
+
+      const x1 = Number(box[0]);
+      const y1 = Number(box[1]);
+      const x2 = Number(box[2]);
+      const y2 = Number(box[3]);
+      if (![x1, y1, x2, y2].every((value) => Number.isFinite(value))) {
+        return null;
+      }
+
+      const left = Math.max(0, Math.min(1, Math.min(x1, x2)));
+      const top = Math.max(0, Math.min(1, Math.min(y1, y2)));
+      const right = Math.max(0, Math.min(1, Math.max(x1, x2)));
+      const bottom = Math.max(0, Math.min(1, Math.max(y1, y2)));
+
+      if (right <= left || bottom <= top) {
+        return null;
+      }
+
+      return {
+        id: `gt-${question.qid}-${index}`,
+        x: left,
+        y: top,
+        width: right - left,
+        height: bottom - top,
+      };
+    })
+    .filter((item): item is GroundTruthBox => Boolean(item));
 }
 
 function resolvePreferredImageIndex(question?: CaseQuestion | null): number {
@@ -147,8 +223,55 @@ function questionStepNo(value: string): number {
   return match ? Number(match[1]) : Number.POSITIVE_INFINITY;
 }
 
+function shouldPreserveChoiceOptions(questionType?: string): boolean {
+  return questionType === "ITT" || questionType === "MITT" || questionType === "TTI";
+}
+
+function renderCasePromptSegments(prompt: string, questionType?: string) {
+  const text = normalizeMultilineText(prompt);
+  const upperType = String(questionType || "").toUpperCase();
+
+  if (!text) {
+    return null;
+  }
+
+  if (upperType === "ITT" || upperType === "MITT") {
+    const lines = text.split("\n");
+    return (
+      <>
+        {lines.map((line, idx) => (
+          <Fragment key={`${upperType}-line-${idx}-${line.slice(0, 16)}`}>
+            {/^[A-D]\.\s/.test(line.trim()) ? line : <TranslatedText text={line} />}
+            {idx < lines.length - 1 ? <br /> : null}
+          </Fragment>
+        ))}
+      </>
+    );
+  }
+
+  if (upperType === "TTI") {
+    const match = text.match(/^(.*?已知作品标题为：)(.+?)(。请判断它对应下列四张图中的哪一张？[\s\S]*)$/);
+    if (match) {
+      return (
+        <>
+          <TranslatedText text={match[1]} />
+          {match[2]}
+          <TranslatedText text={match[3]} />
+        </>
+      );
+    }
+  }
+
+  return <TranslatedText text={text} preserveChoiceOptions={shouldPreserveChoiceOptions(questionType)} />;
+}
+
 export function QuestionDistributionSection() {
+  const { t, locale } = useLocale();
   const content = useJsonContent<QuestionSectionContent>("/content/question-section.json", fallbackContent);
+  const distributionSummary = useJsonContent<DistributionSummaryLite>(
+    "/content/data-distribution.json",
+    fallbackDistributionSummary,
+  );
 
   const [activeCategoryId, setActiveCategoryId] = useState("");
   const [activeSubtypeId, setActiveSubtypeId] = useState("");
@@ -165,7 +288,11 @@ export function QuestionDistributionSection() {
   const imageRef = useRef<HTMLImageElement | null>(null);
   const questionPanelRef = useRef<HTMLDivElement | null>(null);
   const answerPanelRef = useRef<HTMLDivElement | null>(null);
+  const qaPanelRef = useRef<HTMLDivElement | null>(null);
   const [renderedImageSize, setRenderedImageSize] = useState({ width: 0, height: 0 });
+  const [qaRatio, setQaRatio] = useState(0.8);
+  const [resizingQa, setResizingQa] = useState(false);
+  const [mhqaQ1Map, setMhqaQ1Map] = useState<Record<string, CaseQuestion>>({});
 
   const computeContainSize = (naturalWidth: number, naturalHeight: number) => {
     const viewport = imageViewportRef.current;
@@ -246,6 +373,50 @@ export function QuestionDistributionSection() {
     };
   }, [activeSource?.caseFile]);
 
+  useEffect(() => {
+    const sourceId = String(activeSource?.id || "");
+    const baseCaseFile = sourceId.startsWith("ITT_MHQA")
+      ? "/content/question-cases/ITT.json"
+      : sourceId.startsWith("MITT_MHQA")
+        ? "/content/question-cases/MITT.json"
+        : "";
+
+    if (!baseCaseFile) {
+      setMhqaQ1Map({});
+      return;
+    }
+
+    let cancelled = false;
+    async function loadQ1Map() {
+      try {
+        const response = await fetch(resolvePublicUrl(baseCaseFile), { cache: "force-cache" });
+        if (!response.ok) {
+          return;
+        }
+        const parsed = (await response.json()) as CasePayload;
+        const nextMap: Record<string, CaseQuestion> = {};
+        for (const group of parsed?.groups || []) {
+          const tabKey = group?.tabs?.[0] || "Q";
+          const q = group?.questionsByTab?.[tabKey];
+          if (!q?.imageId) {
+            continue;
+          }
+          nextMap[q.imageId] = q;
+        }
+        if (!cancelled) {
+          setMhqaQ1Map(nextMap);
+        }
+      } catch {
+        // keep empty Q1 context map on transient fetch errors
+      }
+    }
+
+    loadQ1Map();
+    return () => {
+      cancelled = true;
+    };
+  }, [activeSource?.id]);
+
   const groups = casePayload?.groups ?? [];
   const totalPages = Math.max(1, groups.length);
   const currentPage = Math.min(page, totalPages);
@@ -276,15 +447,38 @@ export function QuestionDistributionSection() {
       return [];
     }
 
-    return [...activeGroup.tabs]
+    const previousInGroup = [...activeGroup.tabs]
       .sort((a, b) => questionStepNo(a) - questionStepNo(b))
       .filter((tab) => questionStepNo(tab) < currentStep)
       .map((tab) => ({ tab, question: activeGroup.questionsByTab[tab] }))
       .filter((item) => Boolean(item.question));
-  }, [activeGroup, innerTab]);
+
+    const q1 = activeQuestion?.imageId ? mhqaQ1Map[activeQuestion.imageId] : undefined;
+    if (q1) {
+      return [{ tab: "Q1", question: q1 }, ...previousInGroup];
+    }
+    return previousInGroup;
+  }, [activeGroup, activeQuestion?.imageId, innerTab, mhqaQ1Map]);
+
+  const getCategoryLabel = (categoryId: string, fallback: string) => {
+    if (categoryId === "foundational-knowledge") {
+      return t("benchmark.foundationalKnowledge", fallback);
+    }
+    if (categoryId === "visual-content") {
+      return t("benchmark.visualContent", fallback);
+    }
+    if (categoryId === "deep-reasoning") {
+      return t("benchmark.deepReasoning", fallback);
+    }
+    return fallback;
+  };
+
+  const getSubtypeLabel = (shortName: string, fallback: string) => {
+    return t(`benchmark.subtypes.${shortName}`, fallback);
+  };
 
   const chartOption = useMemo(() => {
-    const xLabels = content.chart.map((item) => item.categoryLabel);
+    const xLabels = content.chart.map((item) => getCategoryLabel(item.categoryId, item.categoryLabel));
     const categoryPalette: Record<string, string[]> = {
       "foundational-knowledge": ["#8b4a2f", "#a95d35", "#c5723b", "#e1904a", "#f0aa72"],
       "visual-content": ["#205a5e", "#2b6f73", "#37858a", "#49a0a5", "#75bfc3"],
@@ -302,15 +496,21 @@ export function QuestionDistributionSection() {
       data: content.chart.map((category) => {
         const bar = category.bars[barIndex];
         if (!bar) {
-          return null;
+          return {
+            value: 0,
+            itemStyle: { color: "transparent" },
+            tooltip: { show: false },
+            emphasis: { disabled: true },
+            silent: true,
+          };
         }
         const palette = categoryPalette[category.categoryId] || ["#6a7a82"];
         return {
           value: bar.count,
           categoryId: category.categoryId,
-          categoryLabel: category.categoryLabel,
+            categoryLabel: getCategoryLabel(category.categoryId, category.categoryLabel),
           categoryTotal: category.total,
-          subtypeLabel: bar.subtypeLabel,
+            subtypeLabel: getSubtypeLabel(bar.shortName, bar.subtypeLabel),
           shortName: bar.shortName,
           itemStyle: {
             color: palette[barIndex % palette.length],
@@ -340,7 +540,7 @@ export function QuestionDistributionSection() {
           return [
             `${item.categoryLabel || ""}`,
             `${item.subtypeLabel || ""} (${item.shortName || ""}): ${value}`,
-            `Category Total: ${total}`,
+            `${t("question.categoryTotal")}: ${total}`,
           ].join("<br/>");
         },
       },
@@ -354,14 +554,44 @@ export function QuestionDistributionSection() {
       },
       yAxis: {
         type: "value",
-        name: "Number",
+        name: t("question.number"),
         nameLocation: "middle",
         nameGap: 46,
       },
       series,
       grid: { left: 72, right: 22, top: 24, bottom: 45, containLabel: true },
     };
-  }, [content.chart]);
+  }, [content.chart, t]);
+
+  useEffect(() => {
+    if (!resizingQa) {
+      return;
+    }
+
+    const handleMove = (event: MouseEvent) => {
+      const panel = qaPanelRef.current;
+      if (!panel) {
+        return;
+      }
+      const rect = panel.getBoundingClientRect();
+      if (rect.height <= 0) {
+        return;
+      }
+      const ratio = (event.clientY - rect.top) / rect.height;
+      setQaRatio(Math.max(0.6, Math.min(0.9, ratio)));
+    };
+
+    const handleUp = () => {
+      setResizingQa(false);
+    };
+
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("mouseup", handleUp);
+    };
+  }, [resizingQa]);
 
   const clampOffset = (nextOffset: { x: number; y: number }, nextZoom: number) => {
     const viewport = imageViewportRef.current;
@@ -383,8 +613,9 @@ export function QuestionDistributionSection() {
   }, [zoom, renderedImageSize.width, renderedImageSize.height]);
 
   const handleWheel: React.WheelEventHandler<HTMLDivElement> = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+    if (event.cancelable) {
+      event.preventDefault();
+    }
     const next = event.deltaY < 0 ? zoom * 1.12 : zoom / 1.12;
     const clampedZoom = Math.max(0.6, Math.min(4, next));
     setZoom(clampedZoom);
@@ -444,6 +675,22 @@ export function QuestionDistributionSection() {
     };
   })();
 
+  const groundTruthBoxes = useMemo(
+    () => parseGroundTruthBoxes(activeQuestion, activeImageUrl),
+    [activeImageUrl, activeQuestion],
+  );
+
+  const totalBoxes = useMemo(() => {
+    const sourceId = String(activeSource?.id || "");
+    if (sourceId === "SR") {
+      return Number(distributionSummary.datasetTotals.sealAnnotations || 0);
+    }
+    if (sourceId === "IR") {
+      return Number(distributionSummary.datasetTotals.inscriptionAnnotations || 0);
+    }
+    return null;
+  }, [activeSource?.id, distributionSummary.datasetTotals.inscriptionAnnotations, distributionSummary.datasetTotals.sealAnnotations]);
+
   const handleImageLoad: React.ReactEventHandler<HTMLImageElement> = (event) => {
     const target = event.currentTarget;
     imageRef.current = target;
@@ -479,17 +726,17 @@ export function QuestionDistributionSection() {
   return (
     <section className="section-block" id="question-distribution">
       <div className="section-head center-head">
-        <h2>Question Distribution</h2>
+        <h2>{t("question.title")}</h2>
       </div>
 
       <div className="question-single-block">
         <article className="question-card full-width transparent-card">
-          <h3 className="subsection-title">Number</h3>
+          <h3 className="subsection-title">{t("question.number")}</h3>
           <ReactECharts option={chartOption} style={{ height: 340 }} />
         </article>
 
         <article className="question-card full-width transparent-card">
-          <h3 className="subsection-title">Cases</h3>
+          <h3 className="subsection-title">{t("question.cases")}</h3>
 
           <div className="case-tab-row">
             {(content.categories || []).map((category) => (
@@ -499,7 +746,7 @@ export function QuestionDistributionSection() {
                 onClick={() => setActiveCategoryId(category.id)}
                 type="button"
               >
-                {category.label}
+                {getCategoryLabel(category.id, category.label)}
               </button>
             ))}
           </div>
@@ -514,7 +761,7 @@ export function QuestionDistributionSection() {
                 onClick={() => setActiveSubtypeId(subtype.id)}
                 type="button"
               >
-                {subtype.label}
+                  {getSubtypeLabel(subtype.shortName, subtype.label)}
               </button>
             ))}
           </div>
@@ -570,15 +817,16 @@ export function QuestionDistributionSection() {
                         transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
                       }}
                     >
-                      <img
-                        ref={imageRef}
-                        src={activeImageUrl}
+                      <LoadableImage
+                        src={resolvePublicUrl(activeImageUrl)}
                         alt={activeQuestion.imageId}
                         className="case-image"
                         draggable={false}
                         loading="lazy"
                         decoding="async"
                         onLoad={handleImageLoad}
+                        loadingText={t("common.loading")}
+                        errorText={t("common.loadFailed")}
                       />
                       {shouldShowBBox && normalizedFocusBBox && (
                         <div
@@ -591,6 +839,18 @@ export function QuestionDistributionSection() {
                           }}
                         />
                       )}
+                      {groundTruthBoxes.map((box) => (
+                        <div
+                          key={box.id}
+                          className="case-gt-bbox"
+                          style={{
+                            left: `${box.x * 100}%`,
+                            top: `${box.y * 100}%`,
+                            width: `${box.width * 100}%`,
+                            height: `${box.height * 100}%`,
+                          }}
+                        />
+                      ))}
                     </div>
                   </div>
 
@@ -600,7 +860,7 @@ export function QuestionDistributionSection() {
                       onClick={() => setImageIndex((prev) => Math.max(0, prev - 1))}
                       disabled={imageIndex <= 0}
                     >
-                      Previous Image
+                      {t("question.previousImage")}
                     </button>
                     <span>
                       {imageIndex + 1} / {activeQuestion.images.length}
@@ -612,7 +872,7 @@ export function QuestionDistributionSection() {
                       }
                       disabled={imageIndex >= activeQuestion.images.length - 1}
                     >
-                      Next Image
+                      {t("question.nextImage")}
                     </button>
                     <button
                       type="button"
@@ -621,63 +881,96 @@ export function QuestionDistributionSection() {
                         setOffset({ x: 0, y: 0 });
                       }}
                     >
-                      Reset Zoom
+                      {t("question.resetZoom")}
                     </button>
                   </div>
                 </>
               ) : (
-                <p className="empty-hint">No case image available for this entry.</p>
+                <p className="empty-hint">{t("question.noCaseImage")}</p>
               )}
             </div>
 
-            <div className="case-qa-panel">
+            <div
+              className={`case-qa-panel ${resizingQa ? "resizing" : ""}`}
+              ref={qaPanelRef}
+              style={{ gridTemplateRows: `${qaRatio}fr 10px ${Math.max(0.1, 1 - qaRatio)}fr` }}
+            >
               <div className="question-example" ref={questionPanelRef}>
                 {mhqaContext.length > 0 && (
                   <div className="mhqa-context-block">
                     <p>
-                      <strong>Previous QA Context</strong>
+                      <strong>{t("question.previousQaContext")}</strong>
                     </p>
                     {mhqaContext.map((item) => (
                       <div key={item.tab} className="mhqa-context-item">
                         <p>
                           <strong>{item.tab}</strong>
                         </p>
-                        <p>{normalizeMultilineText(item.question.prompt)}</p>
                         <p>
-                          <strong>Answer:</strong> {formatAnswer(item.question.answer)}
+                          {renderCasePromptSegments(item.question.prompt, item.question.type)}
+                        </p>
+                        <p>
+                          <strong>{t("question.answer")}:</strong>{" "}
+                          <TranslatedText
+                            text={formatAnswer(item.question.answer, t("question.noAnswerLoaded"))}
+                            preserveChoiceOptions={shouldPreserveChoiceOptions(item.question.type)}
+                          />
                         </p>
                       </div>
                     ))}
                   </div>
                 )}
                 <p>
-                  <strong>Question</strong>
+                  <strong>{t("question.question")}</strong>
                 </p>
                 <p className="question-prompt-block">
-                  {normalizeMultilineText(activeQuestion?.prompt) || "No question loaded."}
+                  {normalizeMultilineText(activeQuestion?.prompt) ? (
+                    renderCasePromptSegments(activeQuestion?.prompt || "", activeQuestion?.type)
+                  ) : (
+                    t("question.noQuestionLoaded")
+                  )}
                 </p>
               </div>
+              <div
+                className="qa-resizer"
+                role="separator"
+                aria-orientation="horizontal"
+                aria-label="Resize question and answer"
+                onMouseDown={() => setResizingQa(true)}
+              />
               <div className="question-example" ref={answerPanelRef}>
                 <p>
-                  <strong>Answer (ground truth)</strong>
+                  <strong>{t("question.answerGroundTruth")}</strong>
                 </p>
-                <pre className="answer-text-block">{formatAnswer(activeQuestion?.answer)}</pre>
+                <pre className="answer-text-block">
+                  <TranslatedText
+                    text={formatAnswer(activeQuestion?.answer, t("question.noAnswerLoaded"))}
+                    preserveChoiceOptions={shouldPreserveChoiceOptions(activeQuestion?.type)}
+                  />
+                </pre>
               </div>
             </div>
           </div>
 
           <div className="explorer-footer">
-            <span className="explorer-total">Total Groups: {groups.length.toLocaleString()}</span>
+            <span className="explorer-total">
+              {t("question.totalGroups")}: {groups.length.toLocaleString(locale === "zh" ? "zh-CN" : "en-US")}
+            </span>
+            {totalBoxes !== null && (
+              <span className="explorer-total">
+                {t("question.totalBoxes")}: {totalBoxes.toLocaleString(locale === "zh" ? "zh-CN" : "en-US")}
+              </span>
+            )}
             <div className="explorer-pagination">
               <button type="button" onClick={() => setPage(1)} disabled={currentPage <= 1}>
-                First
+                {t("common.first")}
               </button>
               <button
                 type="button"
                 onClick={() => setPage((prev) => Math.max(1, prev - 1))}
                 disabled={currentPage <= 1}
               >
-                Previous
+                {t("common.previous")}
               </button>
               <span>
                 {currentPage} / {totalPages}
@@ -687,10 +980,10 @@ export function QuestionDistributionSection() {
                 onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
                 disabled={currentPage >= totalPages}
               >
-                Next
+                {t("common.next")}
               </button>
               <button type="button" onClick={() => setPage(totalPages)} disabled={currentPage >= totalPages}>
-                Last
+                {t("common.last")}
               </button>
             </div>
           </div>

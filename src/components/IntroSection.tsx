@@ -1,4 +1,5 @@
 import { useJsonContent } from "../hooks/useJsonContent";
+import { useLocale } from "../hooks/useLocale";
 
 interface IntroCapability {
   id: string;
@@ -28,27 +29,42 @@ const fallbackIntro: IntroCapability[] = [
 ];
 
 export function IntroSection() {
+  const { t, locale } = useLocale();
   const introCapabilities = useJsonContent<IntroCapability[]>(
     "/content/intro-capabilities.json",
     fallbackIntro,
   );
   const introduction = useJsonContent<{ description: string }>("/content/introduction.json", {
-    description:
-      "KnowCP evaluates visual perception, question answering, and cultural reasoning for Chinese painting understanding.",
+    description: t("intro.fallbackDescription"),
   });
+
+  const capabilityFallbackMap: Record<string, { title: string; description: string }> = {
+    "cap-detection": {
+      title: t("intro.detectionTitle"),
+      description: t("intro.detectionDesc"),
+    },
+    "cap-understanding": {
+      title: t("intro.understandingTitle"),
+      description: t("intro.understandingDesc"),
+    },
+    "cap-culture": {
+      title: t("intro.cultureTitle"),
+      description: t("intro.cultureDesc"),
+    },
+  };
 
   return (
     <section className="section-block" id="intro">
       <div className="section-head center-head">
-        <h2>Introduction</h2>
-        <p>{introduction.description}</p>
+        <h2>{t("intro.title")}</h2>
+        <p>{locale === "zh" ? t("intro.fallbackDescription") : introduction.description}</p>
       </div>
 
       <div className="intro-grid">
         {introCapabilities.map((item) => (
           <article key={item.id} className="intro-card">
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
+            <h3>{capabilityFallbackMap[item.id]?.title || item.title}</h3>
+            <p>{capabilityFallbackMap[item.id]?.description || item.description}</p>
           </article>
         ))}
       </div>

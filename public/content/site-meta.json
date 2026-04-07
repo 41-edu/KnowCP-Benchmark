@@ -17,8 +17,8 @@
   "navItems": [
     { "label": "Top", "target": "#top" },
     { "label": "Introduction", "target": "#intro" },
-    { "label": "Data Distribution", "target": "#distribution" },
-    { "label": "Question Distribution", "target": "#question-distribution" },
-    { "label": "Benchmark", "target": "#benchmark-performance" }
+    { "label": "Data", "target": "#distribution" },
+    { "label": "Q&A", "target": "#question-distribution" },
+    { "label": "Performance", "target": "#benchmark-performance" }
   ]
 }
