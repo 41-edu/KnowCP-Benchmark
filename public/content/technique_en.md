@@ -1,0 +1,82 @@
+- Flower and Bird Painting
+
+  - Freehand Style (Xieyi)
+    - Double Outline Method: The linear variations of line organization are consistent with the fine-line drawing (baimiao) of meticulous painting, but the brushstrokes are unrestrained and bold. The discontinuous and connected variations of the freehand double outline method are more obvious and prominent than those of the meticulous baimiao method.
+    - Outline and Dyeing Method: An extension based on the freehand double outline method, which can be divided into four types: fine outline with bold dyeing, bold outline with fine dyeing, bold outline with bold dyeing, and fine outline with fine dyeing. Most of them outline first and then dye, or can dot and write in boneless style first and then outline.
+    - Outline and Filling Method: A method of flatly filling mineral colors on the basis of freehand double outline. When filling colors, water colors or ink are usually used as a base, and after drying, mineral colors are filled to achieve a thick effect. First outline the lines, then fill the colors close to the edge of the lines, ensuring that the color does not cover the lines and does not deviate from the lines.
+    - Boneless Method (Mogu): Directly use color or ink as the medium without depicting objects with ink lines, with highly generalized shapes. The boneless method can be completed purely with ink wash, or with a combination of ink and color.
+    - Ink and Color Breaking Method: First dot and write flowers and leaves with the boneless method, and while they are still wet, use ink or heavier color to collide with them. Various techniques such as dotting, outlining, texturing, rubbing, kneading, flushing, and bumping can be adopted to make the original color spread out.
+    - Half-Meticulous Half-Freehand Method: Between meticulous and freehand styles. The images in the painting include parts with neat and detailed brushwork and parts with more unrestrained freehand brushwork.
+    - Ink and Color Splashing Method: One refers to dipping the brush full of ink or color and swinging it forcefully to paint; the other refers to directly splashing color or ink on the painting surface without using a brush.
+  - Meticulous Style (Gongbi)
+    - Fine-Line Drawing (Baimiao): Depict objects with ink lines without applying color. Except for using side strokes for texturing and rubbing on old flower and wood stems and slope stones, the brushwork is generally completed with center strokes.
+    - Meticulous Heavy Color Method: Emphasizes the calmness of colors and the organic combination of color and ink, magnificent yet elegant, with coordinated colors but not dull.
+    - Meticulous Light Color Method: A meticulous painting method of applying transparent water colors on the basis of line drawing to maintain fresh and elegant characteristics. The light color method does not use mineral colors (except white), but all transparent or semi-transparent colors for dyeing, and the proportion of ink is slightly more than that of the heavy color method.
+    - Alternating Thick and Light Color Method: A method of alternately using transparent colors and mineral colors. Most areas are completed with transparent colors, and individual parts are over-dyed with mineral colors on the basis of transparent colors, that is, mineral colors are finally applied on the transparent color base.
+    - Boneless Method: Depict the shapes of flowers and leaves entirely by dyeing without outlining with ink lines.
+- Landscape Painting
+
+  - Hemp Fiber Texture Stroke (Pima Cun): Mainly use center strokes, with lines from top to bottom, mostly depicting soft soil and rocks in southern China (Source: "The Mustard Seed Garden Painting Manual")
+    - [src\image\22.png]
+  - Unravelled Rope Texture Stroke (Jiesuo Cun): The brushstrokes twist and turn like the curved shape of an unravelled rope, mostly depicting soil and rocks with complex structures
+    - [src\image\23.png]
+  - Lotus Leaf Texture Stroke (Heye Cun): Mainly use center strokes, with texturing lines connected like the veins of lotus leaves, mostly depicting rocks mixed with soil and stone (Source: "The Mustard Seed Garden Painting Manual")
+    - [src\image\24.png]
+  - Ox Hair Texture Stroke (Niuyao Cun): The brushstrokes are relatively thin, with frustrations and bends, dense lines shaped like ox hair (Example: Wang Meng's "Living in Seclusion at Qingbian Mountain")
+    - [src\image\25.png]
+  - Axe-Cut Texture Stroke (Fupi Cun): The effect of brushstrokes is like wood segments split by an axe, mostly depicting rocks with clear block surfaces and exposed stone quality (Example: Ma Yuan's "Painting of Singing and Dancing While Treading on Songs")
+    - [src\image\26.png]
+  - Raindrop Texture Stroke (Yudian Cun): Fast brush placement, dense clustered dots shaped like raindrops, mostly depicting the hard texture of northern rocks (Example: Fan Kuan's "Travelers Among Mountains and Streams")
+    - [src\image\27.png]
+  - Muddy and Watery Texture Stroke (Tuoni Daishui Cun): Combine texturing and dyeing, generally use thick ink for texturing, and break with light ink while wet, with lines and surfaces blending into one (Example: Xia Gui's "Pure and Remote View of Streams and Mountains")
+    - [src\image\28.png]
+  - Random Firewood Texture Stroke (Luancai Cun): The lines are stiffer and more disorderly than hemp fiber texture strokes, mostly depicting rocks with severe wind erosion or extremely irregular joints (Source: "The Mustard Seed Garden Painting Manual")
+    - [src\image\29.png]
+  - Whirlpool Texture Stroke (Danwo Cun): Use slightly side strokes, rotate the brush without stiffness, connect and complement with the artistic conception like swirling eddies, mostly depicting rockery or eroded rocks (Example: Yuan Yao's "Penglai Fairyland")
+    - [src\image\30.png]
+  - Rolling Cloud Texture Stroke (Juanyun Cun): Use center strokes with a touch of side strokes, the shape is round and turning like surging clouds, mostly depicting rocks in the Central Plains and Qilu regions (Example: Guo Xi's "Early Spring")
+    - [src\image\31.png]
+  - Mi-style Dot Texture Stroke (Midian Cun): Dip the brush full of ink and water, with dense and varied horizontal dots, mostly depicting the misty clouds and mountains in the south of the Yangtze River (Example: Mi Fu's "Scroll of Cloudy Mountains and Smoky Trees")
+    - [src\image\32.png]
+  - Folded Band Texture Stroke (Zhedai Cun): Combine center and side strokes, first drag the brush horizontally then turn and texture obliquely, shaped like a folded band, mostly depicting rocks around Taihu Lake in the south of the Yangtze River (Source: "The Mustard Seed Garden Painting Manual")
+    - [src\image\33.png]
+- Figure Painting
+
+  - Ancient Silk Thread Outline (Gaogu Yousi Miao): One of the oldest meticulous line drawing methods, common in Gu Kaizhi's paintings. The lines have little variation in lifting and pressing, thin and even, mostly round and curved. The pause strokes are small round heads.
+    - [src\image\34.png]
+  - Stringed Instrument String Outline (Qinxian Miao): Slightly thicker than the ancient silk thread outline, mostly straight lines. With freehand charm, the lines use trembling center strokes with intermittent changes, mostly giving a straight-line feeling.
+    - [src\image\35.png]
+  - Iron Wire Outline (Tiexian Miao): Thicker than the stringed instrument string outline, but with square and hard brushwork, one of the most common outline methods. The turns are square and powerful, with straight hard folds like bent iron wire. Use center strokes, and pause strokes are also round heads.
+    - [src\image\36.png]
+  - Mixed Outline (Hun Miao): Basically a freehand painting method. First texture the clothing patterns with light ink, and intersperse with thick ink while the ink is still wet, emphasizing the ink technique change of "thick breaking light".
+    - [src\image\37.png]
+  - Cao's Robe Outline (Caoyi Miao): Abbreviation for "Cao Yi Chu Shui Miao" (Cao's Robe Like Emerging from Water). From the Western Regions painter Cao Zhongda, the folds of the Buddha's robe in his paintings hang down, dense and close to the body like emerging from water, hence the name "Cao Yi Chu Shui". Influenced by Gandhara art in India, the brushstrokes are thin and hang down in arc shapes, emphasizing the density arrangement changes between lines.
+    - [src\image\38.png]
+  - Nail Head and Rat Tail Outline (Dingtou Shuwei Miao): Ren Bonian's most commonly used line drawing method. The pause head is large, and due to large turning brushstrokes during pausing, the brushwork has many square folds, and the line thickens like orchid leaf outline when turning, with a sharp and thin end.
+    - [src\image\39.png]
+  - Mattock Head Nail Outline (Juetou Ding Miao): Bald brush line drawing, a freehand brush technique often used by Ma Yuan and Xia Gui. The pause head is large and square, entering the brush with side strokes, with the brush meaning of "axe-cut texture stroke". The lines are thick and powerful.
+    - [src\image\40.png]
+  - Leech Outline (Mahuang Miao): Used by Ma Hezhi. Similar to orchid leaf outline, with large pause heads, tortuous and soft but powerful brushstrokes.
+    - [src\image\41.png]
+  - Willow Leaf Outline (Liuye Miao): The brushstrokes are thin at both ends and thick in the middle. There is no orchid leaf outline in the Eighteen Outline Methods. Willow leaf outline is similar to bamboo leaf outline, both are brush techniques with virtual entry and virtual exit. Used by Wu Daoxuan (Wu Daozi).
+    - [src\image\42.png]
+  - Olive Outline (Ganlan Miao): The pause head is large like an olive, often used by Yan Hui in the Yuan Dynasty, the brushstrokes are slightly thinner but with great thickness variation.
+    - [src\image\43.png]
+  - Jujube Pit Outline (Zaoxiao Miao): The pause head is shaped like a jujube pit, and the lines also have jujube pit-shaped brush variations during movement.
+    - [src\image\44.png]
+  - Folded Reed Outline (Zhelu Miao): Thick brushstrokes with mostly right-angle turns, the pause head is square and large when folding, and the lines are mostly straight, a freehand line drawing method (Example: Liang Kai's "Six Patriarch Chopping Bamboo").
+    - [src\image\45.png]
+  - Bamboo Leaf Outline (Zhuye Miao): Similar to willow leaf outline, also thick in the middle and thin at both ends.
+    - [src\image\46.png]
+  - Trembling Brush Water Pattern Outline (Zhanbi Shuiwen Miao): Like the water pattern painting method in landscape painting. Depict thin and heavily folded clothing patterns. Often used by Tang Yin in the Ming Dynasty for painting noble ladies.
+    - [src\image\47.png]
+  - Reduced Brush Outline (Jianbi Miao): Refers to the brush technique used by Ma Yuan, Liang Kai, etc. for bold freehand painting. Thick brushstrokes, completed in one go with ink color changes in a single stroke. Mostly only draw the outer outline, with extremely concise brushwork.
+    - [src\image\48.png]
+  - Withered Firewood Outline (Kuchai Miao): Ink wash painting brush technique. Thick brushstrokes with little water, similar to texturing method. The brush is often used in reverse stroke and horizontal lying.
+    - [src\image\49.png]
+  - Earthworm Outline (Qiuyin Miao): Even thickness, with many tortuous and soft turns. Use seal script brush technique, round and powerful.
+    - [src\image\50.png]
+  - Flowing Cloud and Running Water Outline (Xingyun Liushui Miao): Depict soft and curved clothing patterns.
+    - [src\image\51.png]
+  - Ink Splashing (Pomo): Splash ink on paper without visible brush marks (Example: "Ink Splashing Immortal").
+    - [src\image\52.png]

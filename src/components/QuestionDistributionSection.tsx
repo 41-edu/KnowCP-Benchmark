@@ -87,6 +87,10 @@ interface CasePayload {
   groups: CaseGroup[];
 }
 
+interface GlossaryPayload {
+  items: Record<string, string>;
+}
+
 interface GroundTruthBox {
   id: string;
   x: number;
@@ -223,13 +227,46 @@ function questionStepNo(value: string): number {
   return match ? Number(match[1]) : Number.POSITIVE_INFINITY;
 }
 
-function shouldPreserveChoiceOptions(questionType?: string): boolean {
-  return questionType === "ITT" || questionType === "MITT" || questionType === "TTI";
+function isChoiceQuestionType(questionType?: string): boolean {
+  const upper = String(questionType || "").toUpperCase();
+  return upper === "ITT" || upper === "MITT" || upper === "TTI" || upper === "ER_CHOICE" || upper === "TR_CHOICE" || upper === "ITT_MHQA_CHOICE" || upper === "MITT_MHQA_CHOICE";
 }
 
-function renderCasePromptSegments(prompt: string, questionType?: string) {
+function shouldPreserveChoiceOptions(questionType?: string): boolean {
+  return isChoiceQuestionType(questionType);
+}
+
+function formatChoiceAnswer(answer: unknown, noAnswerText: string): string {
+  if (answer === null || answer === undefined) {
+    return noAnswerText;
+  }
+  const text = String(answer).trim();
+  if (!text) {
+    return noAnswerText;
+  }
+
+  const exact = text.match(/^[A-D]$/i);
+  if (exact) {
+    return exact[0].toUpperCase();
+  }
+
+  const contained = text.match(/\b([A-D])\b/i);
+  if (contained) {
+    return contained[1].toUpperCase();
+  }
+
+  return text;
+}
+
+function renderCasePromptSegments(
+  prompt: string,
+  questionType?: string,
+  options?: { locale?: string; glossary?: Record<string, string> },
+) {
   const text = normalizeMultilineText(prompt);
   const upperType = String(questionType || "").toUpperCase();
+  const locale = String(options?.locale || "en");
+  const glossary = options?.glossary || {};
 
   if (!text) {
     return null;
@@ -262,11 +299,134 @@ function renderCasePromptSegments(prompt: string, questionType?: string) {
     }
   }
 
+  if (upperType === "ER_CHOICE" || upperType === "TR_CHOICE") {
+    const mapCategoryPath = (value: string) => {
+      const parts = value.split(/(\s*\/\s*)/);
+      return parts
+        .map((part) => {
+          const trimmed = part.trim();
+          if (!trimmed || trimmed === "/") {
+            return part;
+          }
+          return glossary[trimmed] || trimmed;
+        })
+        .join("");
+    };
+
+    const mapInstructionLineEn = (line: string) => {
+      const trimmed = line.trim();
+      if (!trimmed) {
+        return "";
+      }
+
+      if (upperType === "ER_CHOICE") {
+        if (trimmed === "请观察红框中的主体物象，判断其一级类别。") {
+          return "Please observe the main object in the red box and judge its first-level category.";
+        }
+        if (trimmed === "请观察红框中的主体物象，判断其二级类别。") {
+          return "Please observe the main object in the red box and judge its second-level category.";
+        }
+        if (trimmed === "请观察红框中的主体物象，判断其三级类别。") {
+          return "Please observe the main object in the red box and judge its third-level category.";
+        }
+      }
+
+      if (upperType === "TR_CHOICE") {
+        if (trimmed === "请只根据红框区域中的笔法与皴法特征作答。") {
+          return "Please answer based only on the brushwork and texture-stroke features in the red box.";
+        }
+      }
+
+      if (trimmed === "要求：") {
+        return "Requirements:";
+      }
+      if (trimmed === "这是单选题。") {
+        return "This is a multiple-choice question.";
+      }
+      if (trimmed === "1）只依据红框内容作答，不参考画面其他区域。") {
+        return "1) Answer only based on the red-box content, without referring to other image regions.";
+      }
+      if (trimmed === "2）本题为单选题，只输出一个选项字母（如 A）。") {
+        return "2) This is a multiple-choice question; output only one option letter (e.g., A).";
+      }
+      if (trimmed === "选项：") {
+        return "Options:";
+      }
+      if (trimmed === "只输出一个选项字母，不要解释。") {
+        return "Print only one option letter, without explanation.";
+      }
+      if (trimmed === "输出格式硬约束：") {
+        return "Output format hard constraints:";
+      }
+      if (trimmed === "- 只输出一个选项字母（如 A）。") {
+        return "- Print only one option letter (such as A).";
+      }
+      if (trimmed === "- 禁止输出解释、标点、额外文本。") {
+        return "- The output of explanations, punctuation, and additional text is prohibited.";
+      }
+
+      const upperMatch = trimmed.match(/^已确定上层类别：\s*(.+)$/);
+      if (upperMatch) {
+        return `The upper-level category has been determined as: ${mapCategoryPath(upperMatch[1])}`;
+      }
+
+      return null;
+    };
+
+    const lines = text.split("\n");
+    return (
+      <>
+        {lines.map((line, idx) => {
+          const optionMatch = line.trim().match(/^([A-Z])\.\s*(.+)$/);
+          if (optionMatch) {
+            if (locale === "en") {
+              const optionText = String(optionMatch[2] || "").trim();
+              const mapped = glossary[optionText] || optionText;
+              return (
+                <Fragment key={`${upperType}-opt-${idx}-${optionMatch[1]}`}>
+                  {`${optionMatch[1]}. ${mapped}`}
+                  {idx < lines.length - 1 ? <br /> : null}
+                </Fragment>
+              );
+            }
+            return (
+              <Fragment key={`${upperType}-opt-zh-${idx}-${optionMatch[1]}`}>
+                {line}
+                {idx < lines.length - 1 ? <br /> : null}
+              </Fragment>
+            );
+          }
+
+          if (locale === "en") {
+            const mappedLine = mapInstructionLineEn(line);
+            if (mappedLine !== null) {
+              return (
+                <Fragment key={`${upperType}-line-fixed-${idx}-${line.slice(0, 16)}`}>
+                  {mappedLine}
+                  {idx < lines.length - 1 ? <br /> : null}
+                </Fragment>
+              );
+            }
+          }
+
+          return (
+            <Fragment key={`${upperType}-line-${idx}-${line.slice(0, 16)}`}>
+              {locale === "en" ? <TranslatedText text={line} /> : line}
+              {idx < lines.length - 1 ? <br /> : null}
+            </Fragment>
+          );
+        })}
+      </>
+    );
+  }
+
   return <TranslatedText text={text} preserveChoiceOptions={shouldPreserveChoiceOptions(questionType)} />;
 }
 
 export function QuestionDistributionSection() {
   const { t, locale } = useLocale();
+  const glossaryPayload = useJsonContent<GlossaryPayload>("/content/glossary-zh-en.json", { items: {} });
+  const glossaryMap = glossaryPayload.items || {};
   const content = useJsonContent<QuestionSectionContent>("/content/question-section.json", fallbackContent);
   const distributionSummary = useJsonContent<DistributionSummaryLite>(
     "/content/data-distribution.json",
@@ -907,14 +1067,21 @@ export function QuestionDistributionSection() {
                           <strong>{item.tab}</strong>
                         </p>
                         <p>
-                          {renderCasePromptSegments(item.question.prompt, item.question.type)}
+                          {renderCasePromptSegments(item.question.prompt, item.question.type, {
+                            locale,
+                            glossary: glossaryMap,
+                          })}
                         </p>
                         <p>
                           <strong>{t("question.answer")}:</strong>{" "}
-                          <TranslatedText
-                            text={formatAnswer(item.question.answer, t("question.noAnswerLoaded"))}
-                            preserveChoiceOptions={shouldPreserveChoiceOptions(item.question.type)}
-                          />
+                          {isChoiceQuestionType(item.question.type) ? (
+                            formatChoiceAnswer(item.question.answer, t("question.noAnswerLoaded"))
+                          ) : (
+                            <TranslatedText
+                              text={formatAnswer(item.question.answer, t("question.noAnswerLoaded"))}
+                              preserveChoiceOptions={shouldPreserveChoiceOptions(item.question.type)}
+                            />
+                          )}
                         </p>
                       </div>
                     ))}
@@ -925,7 +1092,10 @@ export function QuestionDistributionSection() {
                 </p>
                 <p className="question-prompt-block">
                   {normalizeMultilineText(activeQuestion?.prompt) ? (
-                    renderCasePromptSegments(activeQuestion?.prompt || "", activeQuestion?.type)
+                    renderCasePromptSegments(activeQuestion?.prompt || "", activeQuestion?.type, {
+                      locale,
+                      glossary: glossaryMap,
+                    })
                   ) : (
                     t("question.noQuestionLoaded")
                   )}
@@ -943,10 +1113,20 @@ export function QuestionDistributionSection() {
                   <strong>{t("question.answerGroundTruth")}</strong>
                 </p>
                 <pre className="answer-text-block">
-                  <TranslatedText
-                    text={formatAnswer(activeQuestion?.answer, t("question.noAnswerLoaded"))}
-                    preserveChoiceOptions={shouldPreserveChoiceOptions(activeQuestion?.type)}
-                  />
+                  {isChoiceQuestionType(activeQuestion?.type) ? (
+                    formatChoiceAnswer(activeQuestion?.answer, t("question.noAnswerLoaded"))
+                  ) : String(activeQuestion?.type || "").toUpperCase() === "ER_FILLIN" ||
+                    String(activeQuestion?.type || "").toUpperCase() === "TR_FILLIN" ? (
+                    locale === "en"
+                      ? glossaryMap[formatAnswer(activeQuestion?.answer, t("question.noAnswerLoaded"))] ||
+                        formatAnswer(activeQuestion?.answer, t("question.noAnswerLoaded"))
+                      : formatAnswer(activeQuestion?.answer, t("question.noAnswerLoaded"))
+                  ) : (
+                    <TranslatedText
+                      text={formatAnswer(activeQuestion?.answer, t("question.noAnswerLoaded"))}
+                      preserveChoiceOptions={shouldPreserveChoiceOptions(activeQuestion?.type)}
+                    />
+                  )}
                 </pre>
               </div>
             </div>

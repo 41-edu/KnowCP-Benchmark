@@ -66,7 +66,7 @@ export const messages: Record<Locale, MessageTree> = {
       answerGroundTruth: "Answer (ground truth)",
       answer: "Answer",
       totalGroups: "Total Groups",
-      totalBoxes: "Total Boxes",
+      totalBoxes: "Total Bounding Boxes",
     },
     common: {
       first: "First",

@@ -9,7 +9,14 @@ interface RuntimeTranslationsPayload {
   zhNormalized?: Record<string, string>;
 }
 
+interface GlossaryPayload {
+  generatedAt?: string;
+  items?: Record<string, string>;
+  itemsNormalized?: Record<string, string>;
+}
+
 let mapPromise: Promise<RuntimeTranslationsPayload> | null = null;
+let glossaryPromise: Promise<GlossaryPayload> | null = null;
 
 function normalizeTranslationKey(value: string): string {
   return String(value || "")
@@ -62,6 +69,31 @@ async function loadRuntimeTranslations(): Promise<RuntimeTranslationsPayload> {
   return mapPromise;
 }
 
+async function loadGlossaryTranslations(): Promise<GlossaryPayload> {
+  if (!glossaryPromise) {
+    glossaryPromise = (async () => {
+      try {
+        const response = await fetch(resolvePublicUrl("/content/glossary-zh-en.json"), {
+          cache: "force-cache",
+        });
+        if (!response.ok) {
+          return { items: {}, itemsNormalized: {} };
+        }
+        const payload = (await response.json()) as GlossaryPayload;
+        const items = payload?.items || {};
+        return {
+          generatedAt: payload?.generatedAt,
+          items,
+          itemsNormalized: buildNormalizedMap(items),
+        };
+      } catch {
+        return { items: {}, itemsNormalized: {} };
+      }
+    })();
+  }
+  return glossaryPromise;
+}
+
 export async function translateRuntimeText(
   text: string,
   locale: Locale,
@@ -70,6 +102,21 @@ export async function translateRuntimeText(
   const source = String(text || "");
   if (!source.trim()) {
     return text;
+  }
+
+  if (locale === "en") {
+    const glossary = await loadGlossaryTranslations();
+    const direct = glossary.items?.[source];
+    if (typeof direct === "string" && direct.trim()) {
+      return direct;
+    }
+    const normalizedSource = normalizeTranslationKey(source);
+    if (normalizedSource) {
+      const normalizedHit = glossary.itemsNormalized?.[normalizedSource];
+      if (typeof normalizedHit === "string" && normalizedHit.trim()) {
+        return normalizedHit;
+      }
+    }
   }
 
   const payload = await loadRuntimeTranslations();

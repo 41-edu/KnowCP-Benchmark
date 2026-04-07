@@ -17,6 +17,12 @@ const TRANSLATION_CACHE_PATH = path.join(DOCS_DIR, "translation_cache.json");
 const TRANSLATION_ITEMS_PATH = path.join(CONTENT_DIR, "translation-items.json");
 const TRANSLATION_PENDING_PATH = path.join(CONTENT_DIR, "translation-pending.json");
 const IMAGE_ID_MAP_PATH = path.join(ROOT, "..", "hf_repo", "mappings", "image_id_map.json");
+const TAG_ZH_PATH = path.join(CONTENT_DIR, "tag.json");
+const TAG_EN_PATH = path.join(CONTENT_DIR, "tag_en.json");
+const TECHNIQUE_ZH_PATH = path.join(CONTENT_DIR, "technique.md");
+const TECHNIQUE_EN_PATH = path.join(CONTENT_DIR, "technique_en.md");
+
+let GLOSSARY_CACHE = null;
 
 const HF_BASE_URL = "https://huggingface.co/datasets/g41/KnowCP/resolve/main";
 const MUSEUM_EN_MAP = {
@@ -58,6 +64,101 @@ function ensureDir(dirPath) {
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
+}
+
+function stripTechniqueParenthetical(value) {
+  const text = String(value || "").trim();
+  const bracketIndex = text.indexOf("(");
+  if (bracketIndex >= 0) {
+    return text.slice(0, bracketIndex).trim();
+  }
+  return text;
+}
+
+function normalizeGlossaryLabel(value) {
+  return String(value || "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractTechniqueLabels(markdown) {
+  const labels = [];
+  const lines = String(markdown || "").split(/\r?\n/);
+  for (const line of lines) {
+    const match = line.match(/^\s*-\s+(.*)$/);
+    if (!match) {
+      continue;
+    }
+    const raw = String(match[1] || "").trim();
+    if (!raw || /^\[src[\\/]/i.test(raw)) {
+      continue;
+    }
+    const base = raw.includes("：") ? raw.split("：")[0] : raw.includes(":") ? raw.split(":")[0] : raw;
+    const label = normalizeGlossaryLabel(base);
+    if (!label) {
+      continue;
+    }
+    labels.push(label);
+  }
+  return labels;
+}
+
+function addTagMappings(zhNode, enNode, map) {
+  const zhEntries = Object.entries(zhNode || {});
+  const enEntries = Object.entries(enNode || {});
+  const count = Math.min(zhEntries.length, enEntries.length);
+  for (let index = 0; index < count; index += 1) {
+    const [zhLabel, zhValue] = zhEntries[index];
+    const [enLabel, enValue] = enEntries[index];
+    const key = normalizeGlossaryLabel(zhLabel);
+    const value = normalizeGlossaryLabel(enLabel);
+    if (key && value && !(key in map)) {
+      map[key] = value;
+    }
+
+    const zhChildren = zhValue && typeof zhValue === "object" ? zhValue.children : null;
+    const enChildren = enValue && typeof enValue === "object" ? enValue.children : null;
+    if (zhChildren && enChildren) {
+      addTagMappings(zhChildren, enChildren, map);
+    }
+  }
+}
+
+function getGlossaryMap() {
+  if (GLOSSARY_CACHE) {
+    return GLOSSARY_CACHE;
+  }
+
+  const map = {};
+
+  const tagZh = readJsonOrDefault(TAG_ZH_PATH, {});
+  const tagEn = readJsonOrDefault(TAG_EN_PATH, {});
+  addTagMappings(tagZh, tagEn, map);
+
+  const techniqueZh = fs.existsSync(TECHNIQUE_ZH_PATH) ? fs.readFileSync(TECHNIQUE_ZH_PATH, "utf8") : "";
+  const techniqueEn = fs.existsSync(TECHNIQUE_EN_PATH) ? fs.readFileSync(TECHNIQUE_EN_PATH, "utf8") : "";
+  const zhLabels = extractTechniqueLabels(techniqueZh);
+  const enLabels = extractTechniqueLabels(techniqueEn);
+  const count = Math.min(zhLabels.length, enLabels.length);
+  for (let index = 0; index < count; index += 1) {
+    const zhLabel = normalizeGlossaryLabel(zhLabels[index]);
+    const enLabel = stripTechniqueParenthetical(normalizeGlossaryLabel(enLabels[index]));
+    if (zhLabel && enLabel && !(zhLabel in map)) {
+      map[zhLabel] = enLabel;
+    }
+  }
+
+  GLOSSARY_CACHE = map;
+  return GLOSSARY_CACHE;
+}
+
+function buildGlossaryFile() {
+  const map = getGlossaryMap();
+  writeJson("glossary-zh-en.json", {
+    generatedAt: new Date().toISOString(),
+    count: Object.keys(map).length,
+    items: map,
+  });
 }
 
 function readJsonOrDefault(filePath, fallbackValue) {
@@ -1341,6 +1442,11 @@ function splitCasePromptForTranslation(prompt, type) {
   return [{ text, translatable: true }];
 }
 
+function isChoiceQuestionType(type) {
+  const upperType = String(type || "").toUpperCase();
+  return upperType.endsWith("_CHOICE") || upperType === "ITT" || upperType === "MITT" || upperType === "TTI";
+}
+
 function collectTranslatableStringsFromCases(caseDir, collector) {
   if (!fs.existsSync(caseDir)) {
     return;
@@ -1363,12 +1469,46 @@ function collectTranslatableStringsFromCases(caseDir, collector) {
             collector.add(part);
           }
         }
-        if (typeof question?.answer === "string") {
+        if (!isChoiceQuestionType(question?.type) && typeof question?.answer === "string") {
           collector.add(String(question.answer));
         }
       }
     }
   }
+}
+
+function pruneRuntimeTranslations(runtimePayload, activeItemSet, glossaryMap) {
+  const pruned = {
+    generatedAt: runtimePayload.generatedAt,
+    en: {},
+    zh: {},
+  };
+
+  for (const [key, value] of Object.entries(runtimePayload?.en || {})) {
+    if (!activeItemSet.has(key)) {
+      continue;
+    }
+    if (key in glossaryMap) {
+      continue;
+    }
+    if (typeof value === "string" && value.trim()) {
+      pruned.en[key] = value;
+    }
+  }
+
+  for (const [key, value] of Object.entries(runtimePayload?.zh || {})) {
+    if (!activeItemSet.has(key)) {
+      continue;
+    }
+    if (key in glossaryMap) {
+      continue;
+    }
+    if (typeof value === "string" && value.trim()) {
+      pruned.zh[key] = value;
+    }
+  }
+
+  return pruned;
 }
 
 async function buildStaticTranslations() {
@@ -1512,8 +1652,12 @@ async function buildStaticTranslations() {
     }
   }
 
+  const activeItemSet = new Set(collectTranslatableItems().map((item) => item.text));
+  const glossaryMap = getGlossaryMap();
+  const prunedOutput = pruneRuntimeTranslations(output, activeItemSet, glossaryMap);
+
   saveTranslationCache(cache);
-  writeJson("runtime-translations.json", output);
+  writeJson("runtime-translations.json", prunedOutput);
   writeJson("translation-pending.json", {
     generatedAt: new Date().toISOString(),
     count: unresolvedItems.length,
@@ -1523,7 +1667,7 @@ async function buildStaticTranslations() {
     console.warn(`[build:trans] Reached TRANSLATE_MAX_CALLS_PER_RUN=${translateMaxCallsPerRun}. Re-run build:trans to continue incremental translation.`);
   }
   console.log(
-    `[build:trans] Runtime translations prepared: ${items.length} input texts, ${translatedCount} successful API translations, ${apiCallCount} API calls, ${unresolvedItems.length} still pending.`,
+    `[build:trans] Runtime translations prepared: ${items.length} input texts, ${translatedCount} successful API translations, ${apiCallCount} API calls, ${unresolvedItems.length} still pending, ${Object.keys(prunedOutput.en || {}).length} kept EN keys.`,
   );
 }
 
@@ -1531,6 +1675,7 @@ function collectTranslatableItems() {
   const env = { ...loadDotEnv(ENV_PATH), ...process.env };
   const translateSourceMode = String(env.TRANSLATE_SOURCE_MODE || "auto").toLowerCase();
   const collector = new Set();
+  const glossaryMap = getGlossaryMap();
   collectTranslatableStringsFromHierarchy(path.join(CONTENT_DIR, "annotation-elements.json"), collector);
   collectTranslatableStringsFromHierarchy(path.join(CONTENT_DIR, "annotation-techniques.json"), collector);
   collectTranslatableStringsFromQuestionSection(path.join(CONTENT_DIR, "question-section.json"), collector);
@@ -1543,6 +1688,9 @@ function collectTranslatableItems() {
       continue;
     }
     if (shouldSkipTranslationText(key)) {
+      continue;
+    }
+    if (key in glossaryMap) {
       continue;
     }
     itemMap.set(key, {
@@ -1603,6 +1751,7 @@ function buildTranslationItemsFile() {
 function buildItemOnly() {
   ensureDir(CONTENT_DIR);
   ensureDir(CASES_DIR);
+  buildGlossaryFile();
   buildDistributionData();
   buildQuestionData();
   buildElementGuide();
@@ -1624,6 +1773,8 @@ async function run() {
     return;
   }
   if (mode === "trans") {
+    ensureDir(CONTENT_DIR);
+    buildGlossaryFile();
     await buildStaticTranslations();
     return;
   }

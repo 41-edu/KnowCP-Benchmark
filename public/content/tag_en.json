@@ -1,0 +1,485 @@
+{
+  "Plants": {
+    "children": {
+      "Trees": {
+        "children": {
+          "Willow": {},
+          "Pine": {},
+          "Withered Wood": {},
+          "Cypress": {},
+          "Pagoda Tree": {},
+          "Firmiana Simplex": {},
+          "Banana": {},
+          "Loquat": {},
+          "Grape": {},
+          "Quercus Dentata": {},
+          "Maple": {},
+          "Shrubs": {},
+          "Vines": {},
+          "Miscellaneous Trees": {}
+        }
+      },
+      "Orchids and Bamboos": {
+        "children": {
+          "Sunny Bamboo": {},
+          "Rainy Bamboo": {},
+          "Bamboo": {},
+          "Snowy Bamboo": {},
+          "Orchid Grass": {},
+          "Scattered Bamboo for Scene Pointing": {},
+          "Wind-blown Bamboo": {},
+          "Bamboo Forest": {}
+        }
+      },
+      "Flowers": {
+        "children": {
+          "Plum Blossom": {},
+          "Peach Blossom": {},
+          "Sweet Osmanthus": {},
+          "Orchid": {},
+          "Chrysanthemum": {},
+          "Peony": {},
+          "Lotus": {},
+          "Chinese Herbaceous Peony": {},
+          "Narcissus": {},
+          "Wisteria": {},
+          "Magnolia": {},
+          "Chinese Flowering Crabapple": {},
+          "Morning Glory": {},
+          "Scattered Flowers for Scene Pointing": {},
+          "Camellia": {},
+          "Fruits": {},
+          "Daylily": {},
+          "Gardenia": {},
+          "Chinese Rose": {},
+          "Cherry": {},
+          "Poppy": {},
+          "Winter Jasmine": {},
+          "Polygonum Orientale": {},
+          "Iris": {},
+          "Hydrangea": {},
+          "Hollyhock": {},
+          "Apricot Blossom": {}
+        }
+      },
+      "Weeds": {
+        "children": {
+          "Terrestrial Weeds": {},
+          "Reed": {},
+          "Aquatic Weeds": {},
+          "Duckweed": {},
+          "Thorns": {},
+          "Ganoderma Lucidum": {}
+        }
+      },
+      "Vegetables and Fruits": {
+        "children": {}
+      }
+    }
+  },
+  "Animals": {
+    "children": {
+      "Birds": {
+        "children": {
+          "Goose": {},
+          "Duck": {},
+          "Sparrow": {},
+          "Wild Goose": {},
+          "Red-crowned Crane": {},
+          "Eagle and Vulture": {},
+          "Myna": {},
+          "Magpie": {},
+          "Pigeon": {},
+          "Chicken": {},
+          "White-eye": {},
+          "Parrot": {},
+          "Mandarin Duck": {},
+          "Heron": {},
+          "Hoopoe": {},
+          "Swallow": {},
+          "Crow": {},
+          "Oriole": {},
+          "Quail": {},
+          "Egret": {},
+          "Chinese Bulbul": {},
+          "Golden Pheasant": {},
+          "Peacock": {},
+          "Wagtail": {},
+          "Kingfisher": {},
+          "Scattered Flying Birds for Scene Pointing": {},
+          "Tit": {},
+          "Paradise Flycatcher": {},
+          "Thrush": {}
+        }
+      },
+      "Beasts and Mammals": {
+        "children": {
+          "Cat": {},
+          "Horse": {},
+          "Dog": {},
+          "Sheep": {},
+          "Deer": {},
+          "Cattle": {},
+          "Camel": {},
+          "Ape and Monkey": {},
+          "Squirrel": {},
+          "Rat/Mouse": {},
+          "Elephant": {},
+          "Tiger": {},
+          "Snake": {},
+          "Rabbit": {},
+          "Lion": {},
+          "Donkey": {},
+          "Bat": {},
+          "Toad and Frog": {}
+        }
+      },
+      "Aquatic Animals": {
+        "children": {
+          "Crab": {},
+          "Soft-shelled Turtle": {},
+          "Shrimp": {},
+          "Mussel": {},
+          "Turtle": {},
+          "Fish": {}
+        }
+      },
+      "Insects": {
+        "children": {
+          "Cicada": {},
+          "Dragonfly": {},
+          "Mantis": {},
+          "Butterfly": {},
+          "Cricket": {},
+          "Spider": {},
+          "Bee": {},
+          "Reptiles": {},
+          "Grasshopper": {},
+          "Silkworm": {},
+          "Scattered Insects for Scene Pointing": {},
+          "Snail": {},
+          "Long-horned Beetle": {}
+        }
+      },
+      "Auspicious Beasts and Divine Birds": {
+        "children": {
+          "Kirin": {},
+          "Phoenix": {},
+          "Dragon": {}
+        }
+      }
+    }
+  },
+  "Figures": {
+    "children": {
+      "Scholars": {
+        "children": {}
+      },
+      "Noble Ladies": {
+        "children": {}
+      },
+      "Infants": {
+        "children": {}
+      },
+      "Farmers": {
+        "children": {}
+      },
+      "Emperors and Sages": {
+        "children": {}
+      },
+      "Peddlers": {
+        "children": {}
+      },
+      "Woodcutters": {
+        "children": {}
+      },
+      "Fishermen": {
+        "children": {}
+      },
+      "Travelers": {
+        "children": {}
+      },
+      "Taoist Priests": {
+        "children": {}
+      },
+      "Monks": {
+        "children": {}
+      },
+      "Attendants": {
+        "children": {}
+      },
+      "Citizens": {
+        "children": {}
+      },
+      "Book Boys": {
+        "children": {}
+      },
+      "Shepherds": {
+        "children": {}
+      },
+      "Ethnic Minorities": {
+        "children": {}
+      },
+      "Soldiers": {
+        "children": {}
+      },
+      "Scattered Figures for Scene Pointing": {
+        "children": {}
+      },
+      "Grooms": {
+        "children": {}
+      }
+    }
+  },
+  "Gods and Buddhas": {
+    "children": {
+      "Bodhisattvas": {
+        "children": {}
+      },
+      "Buddhas": {
+        "children": {}
+      },
+      "Arhats": {
+        "children": {}
+      },
+      "Ghosts and Monsters": {
+        "children": {}
+      },
+      "Fairy Maidens": {
+        "children": {}
+      },
+      "Three Pure Ones (Taoist Deities)": {
+        "children": {}
+      },
+      "Zhong Kui (Ghost Catcher)": {
+        "children": {}
+      }
+    }
+  },
+  "Architecture": {
+    "children": {
+      "Pavilions and Towers": {
+        "children": {
+          "Courtyard": {},
+          "Yard": {},
+          "Terraces and Towers": {},
+          "Mountain Shops": {},
+          "Palaces and Temples": {},
+          "Bird Feeders": {},
+          "Pavilions and Pavilions with Balconies": {},
+          "Scattered Buildings for Scene Pointing": {}
+        }
+      },
+      "Pavilions": {
+        "children": {}
+      },
+      "Thatched Cottages": {
+        "children": {
+          "Mountain Shops": {}
+        }
+      },
+      "Temples and Monasteries": {
+        "children": {
+          "Pagodas": {}
+        }
+      },
+      "Bridges": {
+        "children": {
+          "Arch Bridges": {},
+          "Wooden Bridges": {},
+          "Stone Bridges": {},
+          "Floating Bridges": {}
+        }
+      },
+      "City Walls": {
+        "children": {}
+      },
+      "Farmland": {
+        "children": {}
+      },
+      "Railings": {
+        "children": {}
+      },
+      "Single-story Houses": {
+        "children": {}
+      },
+      "Doors": {
+        "children": {}
+      },
+      "Stone Tablets": {
+        "children": {}
+      },
+      "Water Pavilions": {
+        "children": {}
+      },
+      "Corridors": {
+        "children": {}
+      },
+      "Shrines": {
+        "children": {}
+      }
+    }
+  },
+  "Furniture": {
+    "children": {
+      "Chairs": {
+        "children": {}
+      },
+      "Tablets/Antique Tables": {
+        "children": {}
+      },
+      "Screens": {
+        "children": {}
+      },
+      "Desks and Tables": {
+        "children": {}
+      },
+      "Long Side Tables": {
+        "children": {}
+      },
+      "Cabinets": {
+        "children": {}
+      },
+      "Couches/Beds": {
+        "children": {}
+      }
+    }
+  },
+  "Transportation": {
+    "children": {
+      "Horse-drawn Carriages": {
+        "children": {}
+      },
+      "Donkey-drawn Carriages": {
+        "children": {}
+      },
+      "Ox-drawn Carriages": {
+        "children": {}
+      },
+      "Sedan Chairs": {
+        "children": {}
+      },
+      "Boats and Ships": {
+        "children": {}
+      },
+      "Palanquins (Man-carried)": {
+        "children": {}
+      },
+      "Imperial Carriages": {
+        "children": {}
+      },
+      "Roads": {
+        "children": {}
+      }
+    }
+  },
+  "Cultural Relics and Antiques": {
+    "children": {
+      "Books": {
+        "children": {}
+      },
+      "Calligraphy and Paintings": {
+        "children": {}
+      },
+      "Bronze Ware": {
+        "children": {}
+      },
+      "Chess": {
+        "children": {}
+      },
+      "Incense Burners and Vases": {
+        "children": {}
+      },
+      "Religious Instruments": {
+        "children": {}
+      },
+      "Porcelain": {
+        "children": {}
+      }
+    }
+  },
+  "Musical Instruments": {
+    "children": {
+      "Ruan (Plucked String Instrument)": {},
+      "Pipa (Lute)": {},
+      "Sheng (Reed Pipe)": {},
+      "Drums": {},
+      "Flutes and Xiao (Vertical Flute)": {},
+      "Guqin (Seven-stringed Zither)": {}
+    }
+  },
+  "Water": {
+    "children": {
+      "Pools": {},
+      "Streams and Springs": {},
+      "Waterfalls": {},
+      "Rivers": {},
+      "Ponds": {},
+      "Lakes and Seas": {},
+      "Water Ripples": {}
+    }
+  },
+  "Peaks and Ridges": {
+    "children": {
+      "Groups of Peaks": {},
+      "Main Peaks": {},
+      "Distant Mountains": {},
+      "Gorges": {},
+      "Rocky Outcrops": {},
+      "Valleys": {},
+      "Mountain Peaks": {}
+    }
+  },
+  "Clouds and Mist": {
+    "children": {
+      "Mist and Haze": {},
+      "Clouds": {},
+      "Fog": {}
+    }
+  },
+  "Landforms": {
+    "children": {
+      "Main Rocks": {},
+      "Cliffs": {},
+      "Islands": {},
+      "Slopes and Banks": {},
+      "Ornamental Stones": {}
+    }
+  },
+  "Environment": {
+    "children": {
+      "Sun": {},
+      "Moon": {},
+      "Wind": {},
+      "Rain": {},
+      "Snow": {}
+    }
+  },
+  "Tools and Miscellaneous Utensils": {
+    "children": {
+      "Farm Tools": {},
+      "Weapons": {},
+      "Fishing Gear": {}
+    }
+  },
+  "Costumes and Patterns": {
+    "children": {
+      "Headwear": {},
+      "Facial Ornaments": {},
+      "Back Wraps": {},
+      "Clothing": {},
+      "Decorative Patterns": {},
+      "Shoes and Socks": {}
+    }
+  },
+  "Folk Customs and Festivals": {
+    "children": {
+      "Markets": {},
+      "Lanterns": {},
+      "Firecrackers and Fireworks": {},
+      "Restaurants/Wine Shops": {},
+      "Opera": {},
+      "Nuo Rituals (Masked Folk Dance)": {}
+    }
+  }
+}

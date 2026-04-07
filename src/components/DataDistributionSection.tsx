@@ -65,6 +65,10 @@ interface ViewerState {
   index: number;
 }
 
+interface GlossaryPayload {
+  items: Record<string, string>;
+}
+
 const EMPTY_HIERARCHY: HierarchyPayload = {
   hierarchy: { topLevel: [], nodes: [] },
   samples: [],
@@ -334,6 +338,8 @@ function FullImageViewer({
 
 export function DataDistributionSection() {
   const { locale, t } = useLocale();
+  const glossaryPayload = useJsonContent<GlossaryPayload>("/content/glossary-zh-en.json", { items: {} });
+  const glossaryMap = glossaryPayload.items || {};
   const tagOrder = useJsonContent<Record<string, unknown>>("/content/tag.json", {});
   const summary = useJsonContent<DistributionSummary>("/content/data-distribution.json", {
     collectionDistribution: [],
@@ -750,6 +756,13 @@ export function DataDistributionSection() {
   const clampedPage = Math.min(page, totalPages);
   const pageSamples = allModeSamples.slice((clampedPage - 1) * pageSize, clampedPage * pageSize);
 
+  const renderHierarchyLabel = (label: string) => {
+    if (locale === "en" && (mode === "elements" || mode === "techniques")) {
+      return glossaryMap[label] || label;
+    }
+    return <TranslatedText text={label} />;
+  };
+
   useEffect(() => {
     const nextStart = clampedPage * pageSize;
     const nextSamples = allModeSamples.slice(nextStart, nextStart + Math.min(pageSize, 6));
@@ -875,7 +888,7 @@ export function DataDistributionSection() {
                             className={hierarchyContext.path.l1 === key ? "active" : ""}
                             onClick={() => hierarchyContext.setPath({ l1: key, l2: "", l3: "" })}
                           >
-                            <TranslatedText text={node.label} /> <span className="hierarchy-count">({node.count})</span>
+                            {renderHierarchyLabel(node.label)} <span className="hierarchy-count">({node.count})</span>
                           </button>
                         );
                       })}
@@ -901,7 +914,7 @@ export function DataDistributionSection() {
                                 }))
                               }
                             >
-                              <TranslatedText text={node.label} /> <span className="hierarchy-count">({node.count})</span>
+                              {renderHierarchyLabel(node.label)} <span className="hierarchy-count">({node.count})</span>
                             </button>
                           );
                         })}
@@ -927,7 +940,7 @@ export function DataDistributionSection() {
                                 }))
                               }
                             >
-                              <TranslatedText text={node.label} /> <span className="hierarchy-count">({node.count})</span>
+                              {renderHierarchyLabel(node.label)} <span className="hierarchy-count">({node.count})</span>
                             </button>
                           );
                         })}
@@ -949,7 +962,9 @@ export function DataDistributionSection() {
                         {sample.pathLevels.length ? (
                           sample.pathLevels.map((level, index) => (
                             <Fragment key={`${sample.id}-${level}-${index}`}>
-                              <TranslatedText text={level} />
+                              {locale === "en" && (mode === "elements" || mode === "techniques")
+                                ? glossaryMap[level] || level
+                                : <TranslatedText text={level} />}
                               {index < sample.pathLevels.length - 1 ? " / " : ""}
                             </Fragment>
                           ))
