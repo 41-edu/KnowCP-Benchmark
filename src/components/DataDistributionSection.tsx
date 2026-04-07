@@ -644,7 +644,7 @@ export function DataDistributionSection() {
     [techniquesData.samples],
   );
 
-  const elementTopLevelOrder = useMemo(() => Object.keys(tagOrder || {}), []);
+  const elementTopLevelOrder = useMemo(() => Object.keys(tagOrder || {}), [tagOrder]);
 
   const orderedElementsTopLevel = useMemo(() => {
     const rank = new Map(elementTopLevelOrder.map((name, index) => [name, index]));
