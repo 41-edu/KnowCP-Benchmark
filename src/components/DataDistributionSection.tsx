@@ -5,7 +5,6 @@ import { TranslatedText } from "./TranslatedText";
 import { useJsonContent } from "../hooks/useJsonContent";
 import { useLocale } from "../hooks/useLocale";
 import { resolvePublicUrl } from "../utils/url";
-import tagOrder from "../../docs/tag.json";
 
 type ExplorerMode = "elements" | "techniques" | "seals" | "inscriptions";
 
@@ -335,6 +334,7 @@ function FullImageViewer({
 
 export function DataDistributionSection() {
   const { locale, t } = useLocale();
+  const tagOrder = useJsonContent<Record<string, unknown>>("/content/tag.json", {});
   const summary = useJsonContent<DistributionSummary>("/content/data-distribution.json", {
     collectionDistribution: [],
     datasetTotals: {
