@@ -580,8 +580,45 @@ th {
   cursor: pointer;
   padding: 8px;
   text-align: left;
+  position: relative;
+  overflow: visible;
   content-visibility: auto;
   contain-intrinsic-size: 230px;
+}
+
+.annotation-crop-tooltip {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 6px;
+  bottom: 6px;
+  z-index: 30;
+  max-height: none;
+  overflow: auto;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(18, 38, 34, 0.95);
+  border: 1px solid rgba(92, 129, 120, 0.68);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.26);
+  color: #eaf6f3;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  user-select: text;
+  hyphens: auto;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.annotation-sample-card:hover .annotation-crop-tooltip,
+.annotation-sample-card:focus-visible .annotation-crop-tooltip {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .annotation-crop-shell {
@@ -696,7 +733,37 @@ th {
 .annotation-viewer-bbox {
   position: absolute;
   border: 3px solid #f03232;
+  pointer-events: auto;
+  z-index: 4;
+}
+
+.annotation-bbox-tooltip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 0;
+  max-width: none;
+  max-height: none;
+  overflow: hidden;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(18, 38, 34, 0.96);
+  border: 1px solid rgba(105, 153, 139, 0.7);
+  color: #eaf6f3;
+  font-size: 0.8rem;
+  line-height: 1.42;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
+  opacity: 0;
+  transform: translateY(4px);
   pointer-events: none;
+  transition: none;
+}
+
+.annotation-bbox-tooltip-floating {
+  opacity: 1;
+  transform: none;
 }
 
 .annotation-viewer-toolbar {
@@ -782,6 +849,7 @@ th {
   flex: 1;
   min-height: 0;
   overflow: hidden;
+  position: relative;
   display: grid;
   place-items: center;
   touch-action: none;
@@ -835,7 +903,37 @@ th {
   background: rgba(245, 158, 11, 0.12);
   border-radius: 6px;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.45);
+  pointer-events: auto;
+  z-index: 4;
+}
+
+.case-bbox-tooltip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 180px;
+  max-width: min(54vw, 440px);
+  max-height: 180px;
+  overflow: auto;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(18, 38, 34, 0.95);
+  border: 1px solid rgba(105, 153, 139, 0.7);
+  color: #eaf6f3;
+  font-size: 0.8rem;
+  line-height: 1.42;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transform: translateY(4px);
   pointer-events: none;
+  transition: none;
+}
+
+.case-bbox-tooltip-floating {
+  opacity: 1;
+  transform: none;
 }
 
 .case-image-toolbar {

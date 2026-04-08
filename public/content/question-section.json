@@ -34,7 +34,7 @@
     {
       "categoryId": "visual-content",
       "categoryLabel": "visual content",
-      "total": 10921,
+      "total": 23178,
       "bars": [
         {
           "subtypeId": "seal-recognition",
@@ -52,7 +52,7 @@
           "subtypeId": "element-recognition",
           "subtypeLabel": "Element-Recognition",
           "shortName": "ER",
-          "count": 4154
+          "count": 16411
         },
         {
           "subtypeId": "technique-recognition",
@@ -180,7 +180,7 @@
     {
       "id": "visual-content",
       "label": "visual content",
-      "count": 10921,
+      "count": 23178,
       "subtypes": [
         {
           "id": "seal-recognition",
@@ -216,21 +216,21 @@
           "id": "element-recognition",
           "label": "Element-Recognition",
           "shortName": "ER",
-          "count": 4154,
+          "count": 16411,
           "sources": [
             {
               "id": "ER_choice",
               "label": "ER_choice",
-              "count": 2875,
+              "count": 11359,
               "caseFile": "/content/question-cases/ER_choice.json",
-              "groupCount": 1279
+              "groupCount": 5052
             },
             {
               "id": "ER_fillin",
               "label": "ER_fillin",
-              "count": 1279,
+              "count": 5052,
               "caseFile": "/content/question-cases/ER_fillin.json",
-              "groupCount": 1279
+              "groupCount": 5052
             }
           ]
         },

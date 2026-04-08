@@ -97,6 +97,13 @@ interface GroundTruthBox {
   y: number;
   width: number;
   height: number;
+  text: string;
+}
+
+interface FloatingTooltipState {
+  text: string;
+  anchorX: number;
+  anchorY: number;
 }
 
 const fallbackContent: QuestionSectionContent = {
@@ -154,7 +161,7 @@ function parseGroundTruthBoxes(question: CaseQuestion | undefined, activeImageUr
   }
 
   const answer = question.answer as
-    | { items?: Array<{ bbox?: unknown; sub_image_path?: string }> }
+    | { items?: Array<{ bbox?: unknown; sub_image_path?: string; text?: unknown }> }
     | undefined;
   const items = Array.isArray(answer?.items) ? answer.items : [];
   const activeKey = normalizeImageKey(activeImageUrl);
@@ -194,6 +201,7 @@ function parseGroundTruthBoxes(question: CaseQuestion | undefined, activeImageUr
         y: top,
         width: right - left,
         height: bottom - top,
+        text: normalizeMultilineText(item?.text).trim(),
       };
     })
     .filter((item): item is GroundTruthBox => Boolean(item));
@@ -445,6 +453,8 @@ export function QuestionDistributionSection() {
   const [dragging, setDragging] = useState(false);
   const [lastPoint, setLastPoint] = useState({ x: 0, y: 0 });
   const imageViewportRef = useRef<HTMLDivElement | null>(null);
+  const caseImageStageRef = useRef<HTMLDivElement | null>(null);
+  const caseTooltipRef = useRef<HTMLDivElement | null>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
   const questionPanelRef = useRef<HTMLDivElement | null>(null);
   const answerPanelRef = useRef<HTMLDivElement | null>(null);
@@ -453,6 +463,8 @@ export function QuestionDistributionSection() {
   const [qaRatio, setQaRatio] = useState(0.8);
   const [resizingQa, setResizingQa] = useState(false);
   const [mhqaQ1Map, setMhqaQ1Map] = useState<Record<string, CaseQuestion>>({});
+  const [caseTooltip, setCaseTooltip] = useState<FloatingTooltipState | null>(null);
+  const [caseTooltipPos, setCaseTooltipPos] = useState({ left: 10, top: 10 });
 
   const computeContainSize = (naturalWidth: number, naturalHeight: number) => {
     const viewport = imageViewportRef.current;
@@ -782,6 +794,91 @@ export function QuestionDistributionSection() {
     setOffset((prev) => clampOffset(prev, clampedZoom));
   };
 
+  const updateCaseTooltipPosition = (anchorX: number, anchorY: number) => {
+    const viewport = imageViewportRef.current;
+    const tooltip = caseTooltipRef.current;
+    if (!viewport || !tooltip) {
+      return;
+    }
+
+    const gap = 12;
+    const pad = 8;
+    const viewportWidth = viewport.clientWidth;
+    const viewportHeight = viewport.clientHeight;
+    const tooltipWidth = tooltip.offsetWidth || 220;
+    const tooltipHeight = tooltip.offsetHeight || 120;
+    const viewportRect = viewport.getBoundingClientRect();
+    const stageRect = caseImageStageRef.current?.getBoundingClientRect();
+
+    const bounds = (() => {
+      if (!stageRect) {
+        return {
+          left: pad,
+          top: pad,
+          right: viewportWidth - pad,
+          bottom: viewportHeight - pad,
+        };
+      }
+
+      const visibleLeft = Math.max(stageRect.left, viewportRect.left) - viewportRect.left;
+      const visibleTop = Math.max(stageRect.top, viewportRect.top) - viewportRect.top;
+      const visibleRight = Math.min(stageRect.right, viewportRect.right) - viewportRect.left;
+      const visibleBottom = Math.min(stageRect.bottom, viewportRect.bottom) - viewportRect.top;
+
+      if (visibleRight - visibleLeft <= 24 || visibleBottom - visibleTop <= 24) {
+        return {
+          left: pad,
+          top: pad,
+          right: viewportWidth - pad,
+          bottom: viewportHeight - pad,
+        };
+      }
+
+      return {
+        left: Math.max(pad, visibleLeft + pad),
+        top: Math.max(pad, visibleTop + pad),
+        right: Math.min(viewportWidth - pad, visibleRight - pad),
+        bottom: Math.min(viewportHeight - pad, visibleBottom - pad),
+      };
+    })();
+
+    let left = anchorX + gap;
+    let top = anchorY - tooltipHeight - gap;
+
+    if (left + tooltipWidth > bounds.right) {
+      left = anchorX - tooltipWidth - gap;
+    }
+    left = Math.max(bounds.left, Math.min(bounds.right - tooltipWidth, left));
+
+    if (top < bounds.top) {
+      top = anchorY + gap;
+    }
+    top = Math.max(bounds.top, Math.min(bounds.bottom - tooltipHeight, top));
+
+    setCaseTooltipPos({ left, top });
+  };
+
+  const showCaseTooltip = (event: React.MouseEvent<HTMLDivElement>, text: string) => {
+    const viewport = imageViewportRef.current;
+    if (!viewport || !text) {
+      return;
+    }
+    const rect = viewport.getBoundingClientRect();
+    const anchorX = event.clientX - rect.left;
+    const anchorY = event.clientY - rect.top;
+    setCaseTooltip({ text, anchorX, anchorY });
+  };
+
+  useEffect(() => {
+    if (!caseTooltip) {
+      return;
+    }
+    const frame = window.requestAnimationFrame(() => {
+      updateCaseTooltipPosition(caseTooltip.anchorX, caseTooltip.anchorY);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [caseTooltip, zoom, offset.x, offset.y, renderedImageSize.width, renderedImageSize.height]);
+
   const handlePointerDown: React.PointerEventHandler<HTMLDivElement> = (event) => {
     if (event.button !== 0) {
       return;
@@ -883,6 +980,10 @@ export function QuestionDistributionSection() {
     }
   }, [activeQuestion?.qid]);
 
+  useEffect(() => {
+    setCaseTooltip(null);
+  }, [activeQuestion?.qid, activeImageUrl]);
+
   return (
     <section className="section-block" id="question-distribution">
       <div className="section-head center-head">
@@ -971,6 +1072,7 @@ export function QuestionDistributionSection() {
                   >
                     <div
                       className="case-image-stage"
+                      ref={caseImageStageRef}
                       style={{
                         width: renderedImageSize.width > 0 ? `${renderedImageSize.width}px` : undefined,
                         height: renderedImageSize.height > 0 ? `${renderedImageSize.height}px` : undefined,
@@ -1009,9 +1111,21 @@ export function QuestionDistributionSection() {
                             width: `${box.width * 100}%`,
                             height: `${box.height * 100}%`,
                           }}
+                          onMouseEnter={(event) => showCaseTooltip(event, box.text)}
+                          onMouseMove={(event) => showCaseTooltip(event, box.text)}
+                          onMouseLeave={() => setCaseTooltip(null)}
                         />
                       ))}
                     </div>
+                    {caseTooltip ? (
+                      <div
+                        className="case-bbox-tooltip case-bbox-tooltip-floating"
+                        style={{ left: `${caseTooltipPos.left}px`, top: `${caseTooltipPos.top}px` }}
+                        ref={caseTooltipRef}
+                      >
+                        {caseTooltip.text}
+                      </div>
+                    ) : null}
                   </div>
 
                   <div className="case-image-toolbar">

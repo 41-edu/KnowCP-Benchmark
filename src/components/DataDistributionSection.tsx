@@ -36,6 +36,9 @@ interface AnnotationSample {
     height: number;
   };
   pathLevels: string[];
+  meta?: {
+    text?: string;
+  };
 }
 
 interface HierarchyNode {
@@ -65,6 +68,12 @@ interface ViewerState {
   index: number;
 }
 
+interface FloatingTooltipState {
+  text: string;
+  anchorX: number;
+  anchorY: number;
+}
+
 interface GlossaryPayload {
   items: Record<string, string>;
 }
@@ -76,7 +85,15 @@ const EMPTY_HIERARCHY: HierarchyPayload = {
 
 const EMPTY_FLAT: FlatPayload = { samples: [] };
 
-function CropPreview({ sample, loadingText }: { sample: AnnotationSample; loadingText: string }) {
+function CropPreview({
+  sample,
+  loadingText,
+  tooltipText,
+}: {
+  sample: AnnotationSample;
+  loadingText: string;
+  tooltipText?: string;
+}) {
   const x1 = Math.max(0, Math.min(1, sample.bbox.x));
   const y1 = Math.max(0, Math.min(1, sample.bbox.y));
   const x2 = Math.max(x1, Math.min(1, sample.bbox.x + sample.bbox.width));
@@ -131,8 +148,15 @@ function CropPreview({ sample, loadingText }: { sample: AnnotationSample; loadin
         loadingText={loadingText}
         errorText={loadingText}
       />
+      {tooltipText ? (
+        <div className="annotation-crop-tooltip">{tooltipText}</div>
+      ) : null}
     </div>
   );
+}
+
+function getAnnotationText(sample: AnnotationSample): string {
+  return String(sample?.meta?.text || "").trim();
 }
 
 function FullImageViewer({
@@ -152,12 +176,22 @@ function FullImageViewer({
 }) {
   const sample = viewer.samples[viewer.index];
   const viewportRef = useRef<HTMLDivElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
   const [zoom, setZoom] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
   const [lastPoint, setLastPoint] = useState({ x: 0, y: 0 });
   const [renderedImageSize, setRenderedImageSize] = useState({ width: 0, height: 0 });
+  const annotationTooltipRef = useRef<HTMLDivElement | null>(null);
+  const [annotationTooltip, setAnnotationTooltip] = useState<FloatingTooltipState | null>(null);
+  const [annotationTooltipPos, setAnnotationTooltipPos] = useState({ left: 10, top: 10 });
+  const [annotationTooltipLayout, setAnnotationTooltipLayout] = useState({
+    width: 240,
+    maxHeight: 180,
+    fontSize: 13,
+    lineHeight: 18,
+  });
 
   const computeContainSize = (naturalWidth: number, naturalHeight: number) => {
     const viewport = viewportRef.current;
@@ -209,6 +243,150 @@ function FullImageViewer({
     setZoom(clampedZoom);
     setOffset((prev) => clampOffset(prev, clampedZoom));
   };
+
+  const updateAnnotationTooltipPosition = (anchorX: number, anchorY: number) => {
+    const viewport = viewportRef.current;
+    const tooltip = annotationTooltipRef.current;
+    if (!viewport || !tooltip) {
+      return;
+    }
+
+    const gap = 12;
+    const pad = 8;
+    const viewportWidth = viewport.clientWidth;
+    const viewportHeight = viewport.clientHeight;
+    const viewportRect = viewport.getBoundingClientRect();
+    const stageRect = stageRef.current?.getBoundingClientRect();
+
+    const bounds = (() => {
+      if (!stageRect) {
+        return {
+          left: pad,
+          top: pad,
+          right: viewportWidth - pad,
+          bottom: viewportHeight - pad,
+        };
+      }
+
+      const visibleLeft = Math.max(stageRect.left, viewportRect.left) - viewportRect.left;
+      const visibleTop = Math.max(stageRect.top, viewportRect.top) - viewportRect.top;
+      const visibleRight = Math.min(stageRect.right, viewportRect.right) - viewportRect.left;
+      const visibleBottom = Math.min(stageRect.bottom, viewportRect.bottom) - viewportRect.top;
+
+      if (visibleRight - visibleLeft <= 24 || visibleBottom - visibleTop <= 24) {
+        return {
+          left: pad,
+          top: pad,
+          right: viewportWidth - pad,
+          bottom: viewportHeight - pad,
+        };
+      }
+
+      return {
+        left: Math.max(pad, visibleLeft + pad),
+        top: Math.max(pad, visibleTop + pad),
+        right: Math.min(viewportWidth - pad, visibleRight - pad),
+        bottom: Math.min(viewportHeight - pad, visibleBottom - pad),
+      };
+    })();
+
+    const availableWidth = Math.max(140, bounds.right - bounds.left);
+    const availableHeight = Math.max(80, bounds.bottom - bounds.top);
+
+    const defaultWidth = Math.min(320, availableWidth);
+    const defaultMaxHeight = Math.min(200, availableHeight);
+    const baseFont = 13;
+    const baseLineHeight = 18;
+
+    let layoutWidth = defaultWidth;
+    let layoutMaxHeight = defaultMaxHeight;
+    let fontSize = baseFont;
+    let lineHeight = baseLineHeight;
+
+    tooltip.style.width = `${layoutWidth}px`;
+    tooltip.style.maxWidth = `${layoutWidth}px`;
+    tooltip.style.fontSize = `${fontSize}px`;
+    tooltip.style.lineHeight = `${lineHeight}px`;
+
+    let requiredHeight = Math.max(baseLineHeight, tooltip.scrollHeight);
+
+    // 先使用舒适初始尺寸，只有放不下时才进入自适应。
+    if (requiredHeight > layoutMaxHeight + 1) {
+      layoutWidth = availableWidth;
+      layoutMaxHeight = availableHeight;
+      tooltip.style.width = `${layoutWidth}px`;
+      tooltip.style.maxWidth = `${layoutWidth}px`;
+      tooltip.style.fontSize = `${baseFont}px`;
+      tooltip.style.lineHeight = `${baseLineHeight}px`;
+
+      requiredHeight = Math.max(baseLineHeight, tooltip.scrollHeight);
+
+      if (requiredHeight > layoutMaxHeight + 1) {
+        const fitScale = Math.min(1, layoutMaxHeight / requiredHeight);
+        fontSize = Math.max(8, Math.round(baseFont * fitScale * 10) / 10);
+        lineHeight = Math.max(11, Math.round(fontSize * 1.38));
+        tooltip.style.fontSize = `${fontSize}px`;
+        tooltip.style.lineHeight = `${lineHeight}px`;
+        requiredHeight = Math.max(lineHeight, tooltip.scrollHeight);
+      }
+    }
+
+    const tooltipWidth = layoutWidth;
+    const tooltipHeight = Math.min(layoutMaxHeight, requiredHeight + 2);
+
+    setAnnotationTooltipLayout((prev) => {
+      if (
+        Math.abs(prev.width - layoutWidth) < 0.5 &&
+        Math.abs(prev.maxHeight - layoutMaxHeight) < 0.5 &&
+        Math.abs(prev.fontSize - fontSize) < 0.05 &&
+        Math.abs(prev.lineHeight - lineHeight) < 0.05
+      ) {
+        return prev;
+      }
+      return {
+        width: layoutWidth,
+        maxHeight: layoutMaxHeight,
+        fontSize,
+        lineHeight,
+      };
+    });
+
+    let left = anchorX + gap;
+    let top = anchorY - tooltipHeight - gap;
+
+    if (left + tooltipWidth > bounds.right) {
+      left = anchorX - tooltipWidth - gap;
+    }
+    left = Math.max(bounds.left, Math.min(bounds.right - tooltipWidth, left));
+
+    if (top < bounds.top) {
+      top = anchorY + gap;
+    }
+    top = Math.max(bounds.top, Math.min(bounds.bottom - tooltipHeight, top));
+
+    setAnnotationTooltipPos({ left, top });
+  };
+
+  const showAnnotationTooltip = (event: React.MouseEvent<HTMLDivElement>, text: string) => {
+    const viewport = viewportRef.current;
+    if (!viewport || !text) {
+      return;
+    }
+    const rect = viewport.getBoundingClientRect();
+    const anchorX = event.clientX - rect.left;
+    const anchorY = event.clientY - rect.top;
+    setAnnotationTooltip({ text, anchorX, anchorY });
+  };
+
+  useEffect(() => {
+    if (!annotationTooltip) {
+      return;
+    }
+    const frame = window.requestAnimationFrame(() => {
+      updateAnnotationTooltipPosition(annotationTooltip.anchorX, annotationTooltip.anchorY);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [annotationTooltip, zoom, offset.x, offset.y, renderedImageSize.width, renderedImageSize.height]);
 
   const handlePointerDown: React.PointerEventHandler<HTMLDivElement> = (event) => {
     if (event.button !== 0) {
@@ -268,6 +446,11 @@ function FullImageViewer({
       height: `${(y2 - y1) * 100}%`,
     };
   })();
+  const bboxText = getAnnotationText(sample);
+
+  useEffect(() => {
+    setAnnotationTooltip(null);
+  }, [viewer.index]);
 
   return (
     <div className="annotation-viewer-embedded" role="presentation">
@@ -285,6 +468,7 @@ function FullImageViewer({
         >
           <div
             className="annotation-viewer-stage"
+            ref={stageRef}
             style={{
               width: renderedImageSize.width > 0 ? `${renderedImageSize.width}px` : undefined,
               height: renderedImageSize.height > 0 ? `${renderedImageSize.height}px` : undefined,
@@ -301,8 +485,31 @@ function FullImageViewer({
               loadingText={loadingText}
               errorText={loadingErrorText}
             />
-            <div className="annotation-viewer-bbox" style={bboxStyle} />
+            <div
+              className="annotation-viewer-bbox"
+              style={bboxStyle}
+              onMouseEnter={(event) => showAnnotationTooltip(event, bboxText)}
+              onMouseMove={(event) => showAnnotationTooltip(event, bboxText)}
+              onMouseLeave={() => setAnnotationTooltip(null)}
+            />
           </div>
+          {annotationTooltip ? (
+            <div
+              className="annotation-bbox-tooltip annotation-bbox-tooltip-floating"
+              style={{
+                left: `${annotationTooltipPos.left}px`,
+                top: `${annotationTooltipPos.top}px`,
+                width: `${annotationTooltipLayout.width}px`,
+                maxWidth: `${annotationTooltipLayout.width}px`,
+                maxHeight: `${annotationTooltipLayout.maxHeight}px`,
+                fontSize: `${annotationTooltipLayout.fontSize}px`,
+                lineHeight: `${annotationTooltipLayout.lineHeight}px`,
+              }}
+              ref={annotationTooltipRef}
+            >
+              {annotationTooltip.text}
+            </div>
+          ) : null}
         </div>
 
         <div className="annotation-viewer-toolbar">
@@ -950,30 +1157,37 @@ export function DataDistributionSection() {
                 )}
 
                 <div className={`annotation-grid mode-${mode}`}>
-                  {pageSamples.map((sample) => (
-                    <button
-                      key={sample.id}
-                      className="annotation-sample-card"
-                      type="button"
-                      onClick={() => openViewer(sample)}
-                    >
-                      <CropPreview sample={sample} loadingText={t("common.loading")} />
-                      <span className="annotation-sample-label">
-                        {sample.pathLevels.length ? (
-                          sample.pathLevels.map((level, index) => (
-                            <Fragment key={`${sample.id}-${level}-${index}`}>
-                              {locale === "en" && (mode === "elements" || mode === "techniques")
-                                ? glossaryMap[level] || level
-                                : <TranslatedText text={level} />}
-                              {index < sample.pathLevels.length - 1 ? " / " : ""}
-                            </Fragment>
-                          ))
-                        ) : (
-                          sample.imageId
-                        )}
-                      </span>
-                    </button>
-                  ))}
+                  {pageSamples.map((sample) => {
+                    const annotationText = getAnnotationText(sample);
+                    return (
+                      <button
+                        key={sample.id}
+                        className="annotation-sample-card"
+                        type="button"
+                        onClick={() => openViewer(sample)}
+                      >
+                        <CropPreview
+                          sample={sample}
+                          loadingText={t("common.loading")}
+                          tooltipText={mode === "inscriptions" ? annotationText : undefined}
+                        />
+                        <span className="annotation-sample-label">
+                          {sample.pathLevels.length ? (
+                            sample.pathLevels.map((level, index) => (
+                              <Fragment key={`${sample.id}-${level}-${index}`}>
+                                {locale === "en" && (mode === "elements" || mode === "techniques")
+                                  ? glossaryMap[level] || level
+                                  : <TranslatedText text={level} />}
+                                {index < sample.pathLevels.length - 1 ? " / " : ""}
+                              </Fragment>
+                            ))
+                          ) : (
+                            sample.imageId
+                          )}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
 
                 <div className="explorer-footer">
