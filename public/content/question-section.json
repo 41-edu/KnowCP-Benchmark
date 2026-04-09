@@ -34,7 +34,7 @@
     {
       "categoryId": "visual-content",
       "categoryLabel": "visual content",
-      "total": 23178,
+      "total": 23165,
       "bars": [
         {
           "subtypeId": "seal-recognition",
@@ -52,7 +52,7 @@
           "subtypeId": "element-recognition",
           "subtypeLabel": "Element-Recognition",
           "shortName": "ER",
-          "count": 16411
+          "count": 16398
         },
         {
           "subtypeId": "technique-recognition",
@@ -65,25 +65,25 @@
     {
       "categoryId": "deep-reasoning",
       "categoryLabel": "deep reasoning",
-      "total": 2766,
+      "total": 2376,
       "bars": [
         {
           "subtypeId": "visual-analysis",
           "subtypeLabel": "Visual-Analysis",
           "shortName": "VA",
-          "count": 922
+          "count": 826
         },
         {
           "subtypeId": "cultural-context",
           "subtypeLabel": "Cultural-Context",
           "shortName": "CC",
-          "count": 922
+          "count": 716
         },
         {
           "subtypeId": "provenance-research",
           "subtypeLabel": "Provenance-Research",
           "shortName": "PR",
-          "count": 922
+          "count": 834
         }
       ]
     }
@@ -180,7 +180,7 @@
     {
       "id": "visual-content",
       "label": "visual content",
-      "count": 23178,
+      "count": 23165,
       "subtypes": [
         {
           "id": "seal-recognition",
@@ -216,21 +216,21 @@
           "id": "element-recognition",
           "label": "Element-Recognition",
           "shortName": "ER",
-          "count": 16411,
+          "count": 16398,
           "sources": [
             {
               "id": "ER_choice",
               "label": "ER_choice",
-              "count": 11359,
+              "count": 11350,
               "caseFile": "/content/question-cases/ER_choice.json",
-              "groupCount": 5052
+              "groupCount": 5048
             },
             {
               "id": "ER_fillin",
               "label": "ER_fillin",
-              "count": 5052,
+              "count": 5048,
               "caseFile": "/content/question-cases/ER_fillin.json",
-              "groupCount": 5052
+              "groupCount": 5048
             }
           ]
         },
@@ -261,20 +261,20 @@
     {
       "id": "deep-reasoning",
       "label": "deep reasoning",
-      "count": 2766,
+      "count": 2376,
       "subtypes": [
         {
           "id": "visual-analysis",
           "label": "Visual-Analysis",
           "shortName": "VA",
-          "count": 922,
+          "count": 826,
           "sources": [
             {
               "id": "VA",
               "label": "VA",
-              "count": 922,
+              "count": 826,
               "caseFile": "/content/question-cases/VA.json",
-              "groupCount": 922
+              "groupCount": 826
             }
           ]
         },
@@ -282,14 +282,14 @@
           "id": "cultural-context",
           "label": "Cultural-Context",
           "shortName": "CC",
-          "count": 922,
+          "count": 716,
           "sources": [
             {
               "id": "CC",
               "label": "CC",
-              "count": 922,
+              "count": 716,
               "caseFile": "/content/question-cases/CC.json",
-              "groupCount": 922
+              "groupCount": 716
             }
           ]
         },
@@ -297,14 +297,14 @@
           "id": "provenance-research",
           "label": "Provenance-Research",
           "shortName": "PR",
-          "count": 922,
+          "count": 834,
           "sources": [
             {
               "id": "PR",
               "label": "PR",
-              "count": 922,
+              "count": 834,
               "caseFile": "/content/question-cases/PR.json",
-              "groupCount": 922
+              "groupCount": 834
             }
           ]
         }
