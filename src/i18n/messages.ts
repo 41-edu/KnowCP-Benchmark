@@ -25,15 +25,15 @@ export const messages: Record<Locale, MessageTree> = {
       title: "Introduction",
       fallbackDescription:
         "KnowCP evaluates visual perception, question answering, and cultural reasoning for Chinese painting understanding.",
-      detectionTitle: "Visual Detection",
+      detectionTitle: "Foundational Knowledge",
       detectionDesc:
-        "Evaluate localized understanding of seals, inscriptions, objects, and technique regions with box-aware questions.",
-      understandingTitle: "Visual Understanding",
+        "Evaluate the ability to align paintings with titles and structured metadata through identity matching and multi-hop knowledge queries.",
+      understandingTitle: "Visual Content",
       understandingDesc:
-        "Evaluate recognition and reasoning from image-level and region-level evidence across structured question formats.",
-      cultureTitle: "Vision-Culture Integration",
+        "Evaluate recognition and grounding of seals, inscriptions, elements, and techniques from painting-level and region-level visual evidence.",
+      cultureTitle: "Deep Reasoning",
       cultureDesc:
-        "Evaluate culturally grounded interpretation by combining visual evidence with art-historical and textual context.",
+        "Evaluate higher-level understanding of visual analysis, cultural context, and provenance through open-ended interpretation and knowledge-grounded reasoning.",
     },
     data: {
       title: "Data Distribution",
@@ -122,12 +122,12 @@ export const messages: Record<Locale, MessageTree> = {
     intro: {
       title: "简介",
       fallbackDescription: "KnowCP 用于评估中国画理解中的视觉感知、问答能力与文化推理能力。",
-      detectionTitle: "视觉检测",
-      detectionDesc: "通过带框问题评估印章、题跋、物象与技法区域的定位与理解能力。",
-      understandingTitle: "视觉理解",
-      understandingDesc: "基于整图与局部证据，评估模型在结构化题型下的识别与推理能力。",
-      cultureTitle: "视觉-文化融合",
-      cultureDesc: "结合图像证据与美术史/文本背景，评估文化语境下的解释能力。",
+      detectionTitle: "基础知识",
+      detectionDesc: "评测模型通过作品识别与多跳知识问答，建立画作标题与结构化元数据对应关系的能力。",
+      understandingTitle: "视觉内容",
+      understandingDesc: "评测模型基于整幅画面与局部区域证据，对印章、题跋、物象与技法进行识别和定位的能力。",
+      cultureTitle: "深层推理",
+      cultureDesc: "评测模型围绕视觉分析、文化语境与流传鉴藏，开展开放式理解与知识支撑推理的能力。",
     },
     data: {
       title: "数据分布",

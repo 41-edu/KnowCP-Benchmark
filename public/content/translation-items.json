@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-09T08:59:59.883Z",
-  "count": 5939,
+  "generatedAt": "2026-04-11T05:23:17.537Z",
+  "count": 5937,
   "items": [
     {
       "text": "foundational knowledge",
@@ -118,17 +118,7 @@
       "source": "en"
     },
     {
-      "text": "ER_choice",
-      "preserveChoiceOptions": false,
-      "source": "en"
-    },
-    {
       "text": "ER_fillin",
-      "preserveChoiceOptions": false,
-      "source": "en"
-    },
-    {
-      "text": "TR_choice",
       "preserveChoiceOptions": false,
       "source": "en"
     },
